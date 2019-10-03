@@ -11,16 +11,16 @@ URL:            https://alces-flight.com
 Source0:        https://raw.githubusercontent.com/alces-flight/alces-flight-omnibus-builder/master/LICENSE.txt
 %define SHA256SUM0 8c349f80764d0648e645f41ef23772a70c995a0924b5235f735f4a3d09df127c
 Source1:        https://alces-flight.s3-eu-west-1.amazonaws.com/repos/alces-flight/alces-flight.repo
-%define SHA256SUM1 eef326f52cb3899837136753c3380602f9594c8e35be1d593c148be2021b3572
+%define SHA256SUM1 2937aed84289daebacf875cb7ed68c924b25667524646ae708ea7c104e97e136
 Source2:        https://alces-flight.s3-eu-west-1.amazonaws.com/repos/alces-flight-dev/alces-flight-dev.repo
-%define SHA256SUM2 3caca02c70445670432de4e09108824e6dc98cd775d23c80a30be6b531d6ec67
+%define SHA256SUM2 35e20706002ea2a802ddbcdbb0c2b667baa6f39dc06bbc41c5d15cc93bc58d9b
 #Source3:        https://alces-flight.com/RPM-GPG-KEY-ALCES-FLIGHT
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:     noarch
 Requires:      redhat-release >= 7
-<
+
 %description
 This package contains the Alces Flight repository configuration for yum.
 
