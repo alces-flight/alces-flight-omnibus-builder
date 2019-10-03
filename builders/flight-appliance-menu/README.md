@@ -1,7 +1,7 @@
-flight-architect Omnibus project
+flight-appliance-menu Omnibus project
 ===========================
 This project creates full-stack platform-specific packages for
-`flight-architect`!
+`flight-appliance-menu`!
 
 Installation
 ------------
@@ -19,7 +19,7 @@ Usage
 You create a platform-specific package using the `build project` command:
 
 ```shell
-$ bin/omnibus build flight-architect
+$ bin/omnibus build flight-appliance-menu
 ```
 
 The platform/architecture type of the package created will match the platform
@@ -33,15 +33,15 @@ You can clean up all temporary files generated during the build process with
 the `clean` command:
 
 ```shell
-$ bin/omnibus clean flight-architect
+$ bin/omnibus clean flight-appliance-menu
 ```
 
 Adding the `--purge` purge option removes __ALL__ files generated during the
-build including the project install directory (`/opt/flight-architect`) and
+build including the project install directory (`/opt/flight/opt/appliance`) and
 the package cache directory (`/var/cache/omnibus/pkg`):
 
 ```shell
-$ bin/omnibus clean flight-architect --purge
+$ bin/omnibus clean flight-appliance-menu --purge
 ```
 
 ### Publish
