@@ -35,3 +35,5 @@ chown vagrant /opt/flight
 
 # pam-devel for flight-desktop-server
 yum install -y -e0 createrepo awscli pam-devel
+
+hostname alces-flight-builder
