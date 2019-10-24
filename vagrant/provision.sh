@@ -33,4 +33,5 @@ rvm install 2.6.5
 mkdir /opt/flight
 chown vagrant /opt/flight
 
-yum install -y -e0 createrepo awscli
+# pam-devel for flight-desktop-server
+yum install -y -e0 createrepo awscli pam-devel
