@@ -65,5 +65,5 @@ end
 package :rpm do
   vendor 'Alces Flight Ltd'
   # repurposed 'priority' field to set RPM recommends
-  #priority 'apg python-websockify'
+  #priority 'apg python-websockify xorg-x11-apps netpbm-progs'
 end

@@ -31,7 +31,7 @@ Optional Dependencies for Flight Desktop
 ========================================
 For better desktop session passwords, please install 'apg' (requires EPEL)
 For websocket support, please install 'python-websockify' (requires EPEL)
-
+For screen capture support, please install 'xorg-x11-apps' and 'netpbm-progs'
 EOF
 
 exit 0
