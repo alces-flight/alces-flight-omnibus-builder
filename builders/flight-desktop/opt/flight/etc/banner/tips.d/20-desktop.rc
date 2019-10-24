@@ -1,8 +1,0 @@
-################################################################################
-##
-## Flight Desktop
-## Copyright (c) 2019-present Alces Flight Ltd
-##
-################################################################################
-flight_TIP_command="flight desktop"
-flight_TIP_synopsis="manage interactive GUI desktop sessions"
