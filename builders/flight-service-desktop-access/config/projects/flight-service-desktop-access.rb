@@ -31,7 +31,7 @@ friendly_name 'Flight Desktop Access Service'
 
 install_dir '/opt/flight/opt/desktop-access'
 
-build_version '1.0.0'
+build_version '1.1.2'
 build_iteration 1
 
 dependency 'preparation'

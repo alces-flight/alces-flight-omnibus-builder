@@ -25,7 +25,7 @@
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
 name 'flight-desktop-server'
-default_version '1.1.0'
+default_version '1.1.2'
 
 source git: 'https://github.com/alces-flight/flight-desktop-server'
 
