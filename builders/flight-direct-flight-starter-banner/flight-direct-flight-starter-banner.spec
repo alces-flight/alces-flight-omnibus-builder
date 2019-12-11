@@ -1,5 +1,5 @@
 Name:           flight-direct-flight-starter-banner
-Version:        1
+Version:        2020.1.0
 Release:        1
 Summary:        Flight Direct branded banner for Flight Starter
 
@@ -9,7 +9,7 @@ License:        EPL-2.0
 URL:            https://alces-flight.com
 %undefine _disable_source_fetch
 Source0:        %{name}-%{version}.tar.gz
-%define SHA256SUM0 673196516a7f0aea27f495eda08728b656491965e53a49ea7f2ca797dc396fdf
+%define SHA256SUM0 82e13e0caf6d02d8b8ac12cc51acda3ee0c4609938e12549ec631812d484faa3
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -44,5 +44,8 @@ cp -R dist/* $RPM_BUILD_ROOT
 /opt/flight/libexec/flight-starter/banner
 
 %changelog
+* Wed Dec 11 2019 Mark J. Titorenko <mark.titorenko@alces-flight.com> - 2020.1.0
+- Updated numbering scheme
+- Updated to 2020.1.0
 * Fri Oct  4 2019 Mark J. Titorenko <mark.titorenko@alces-flight.com> - 1.1.0
 - Initial Package
