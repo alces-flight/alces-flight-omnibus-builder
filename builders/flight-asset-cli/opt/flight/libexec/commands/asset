@@ -1,7 +1,7 @@
 : '
 : NAME: asset
 : SYNOPSIS: Manage Alces Flight Center assets
-: VERSION: 0.1.1
+: VERSION: 0.1.2
 : '
 #==============================================================================
 # Copyright (C) 2019-present Alces Flight Ltd.
@@ -29,6 +29,9 @@
 # For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
+
+# "Temporarily" disable deprecation warnings due to ruby 2.7
+export RUBYOPT='-W:no-deprecated -W:no-experimental'
 
 cd /opt/flight/opt/asset-cli
 flexec bundle exec bin/flight-asset-with-config /opt/flight/etc/asset-cli.yaml "$@"
