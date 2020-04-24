@@ -30,7 +30,7 @@
 # It will be reconfigured by the wizard
 #
 
-base_url: https://center.alces-flight.com/api/v1
+base_url: https://center.alces-flight.com/api
 create_dummy_group_name: ignore-me
 log_path: /opt/flight/var/log/asset-cli.log
 log_level: info
