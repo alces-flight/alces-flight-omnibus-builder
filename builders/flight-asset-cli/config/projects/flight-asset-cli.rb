@@ -31,7 +31,7 @@ friendly_name 'Flight Asset CLI'
 
 install_dir '/opt/flight/opt/asset-cli'
 
-VERSION = '0.1.3'
+VERSION = '0.2.0'
 
 build_version VERSION
 build_iteration 1
