@@ -31,19 +31,25 @@ if [ ! -z "${DEBUG}" ]; then
   set -x
 fi
 
-SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+export SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-if [ -z "$1" ]; then
-  echo "Usage: $0 <rpm pattern>"
+if [ -z "$2" ]; then
+  echo "Usage: $0 <rpm pattern> <distribution>"
   exit 1
 fi
 
-if ! aws s3 ls &>/dev/null; then
-  echo "$0: unable to access S3; check credentials?"
+if ! aws --profile alces-flight s3 ls &>/dev/null; then
+  echo "$0: unable to access S3; check credentials? -- try 'aws configure --profile alces-flight'"
   exit 1
 fi
 
-RPM_PATTERN="$1"
+
+# Check Slack notifications configured
+$SCRIPT_DIR/slack-check.sh
+
+export RPM_PATTERN="$1"
+DIST="$2"
 $SCRIPT_DIR/promote-rpms.sh -s "alces-flight/repos/alces-flight-dev" \
                             -t "alces-flight/repos/alces-flight" \
-                            -r "$RPM_PATTERN"
+                            -r "$RPM_PATTERN" \
+                            -d "$DIST"

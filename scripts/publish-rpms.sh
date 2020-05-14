@@ -42,10 +42,12 @@ do
   fi
 done
 
-while getopts "s:t:" opt; do
+while getopts "s:t:a:d:" opt; do
   case $opt in
     s) SOURCE_DIR=$OPTARG ;;
     t) TARGET_PREFIX=$OPTARG ;;
+    a) ARCH=$OPTARG ;;
+    d) DIST=$OPTARG ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
       exit 1
@@ -63,21 +65,70 @@ if [ -z "${TARGET_PREFIX}" ]; then
   exit 1
 fi
 
-TARGET_DIR="/tmp/${TARGET_PREFIX}"
+# distribution targets
+DIST_TARGETS="7 8"
+
+if [[ "$DIST_TARGETS" != *"$DIST"* ]] ; then
+    # Prompt for user input of target distribution
+    echo "Unknown distribution: $DIST"
+    echo "Distribution of this system: $(rpm --eval '%{centos_ver}')"
+    echo "Distribution should be one of: $DIST_TARGETS"
+    echo "This is expected for noarch RPMs which don't include distribution in release tag"
+    echo
+    read -p "Which distribution target to use? ($DIST_TARGETS) " dist
+    if [[ "$DIST_TARGETS" != *"$dist"* ]] ; then
+        echo "$dist is invalid, exiting..."
+        exit 1
+    elif [[ "$dist" == "" ]] ; then
+        echo "No answer provided, exiting..."
+        exit 1
+    else
+        DIST=$dist
+    fi
+fi
+
+# work-around for legacy locations
+if [ "$DIST" == "7" ]; then
+  TARGET_DIR="/tmp/${TARGET_PREFIX}"
+  TARGET_PREFIX="${TARGET_PREFIX}"
+else
+  TARGET_DIR="/tmp/${TARGET_PREFIX}/${DIST}"
+  TARGET_PREFIX="${TARGET_PREFIX}/${DIST}"
+fi
 
 # make sure we're operating on the latest data in the target bucket
 mkdir -p $TARGET_DIR
-aws --region "${REGION}" s3 sync "s3://${TARGET_PREFIX}" $TARGET_DIR
+aws --profile alces-flight --region "${REGION}" s3 sync --delete "s3://${TARGET_PREFIX}" $TARGET_DIR
 
 # copy the RPM in and update the repo
-mkdir -pv $TARGET_DIR/x86_64/
-cp -rv $SOURCE_DIR/*.rpm $TARGET_DIR/x86_64/
-UPDATE=""
-if [ -e "$TARGET_DIR/x86_64/repodata/repomd.xml" ]; then
-  UPDATE="--update "
+NOARCH_TARGETS="x86_64 aarch64"
+
+if [ "$ARCH" == "noarch" ] ; then
+    for arch in $NOARCH_TARGETS ; do
+        mkdir -pv $TARGET_DIR/$arch
+        cp -rv $SOURCE_DIR/*.rpm $TARGET_DIR/$arch
+        UPDATE=""
+        if [ -e "$TARGET_DIR/$arch/repodata/repomd.xml" ]; then
+          UPDATE="--update "
+        fi
+        createrepo -v $UPDATE --deltas $TARGET_DIR/$arch/
+    done
+else
+    mkdir -pv $TARGET_DIR/$ARCH/
+    cp -rv $SOURCE_DIR/*.rpm $TARGET_DIR/$ARCH/
+    UPDATE=""
+    if [ -e "$TARGET_DIR/$ARCH/repodata/repomd.xml" ]; then
+      UPDATE="--update "
+    fi
+    createrepo -v $UPDATE --deltas $TARGET_DIR/$ARCH/
 fi
 
-createrepo -v $UPDATE --deltas $TARGET_DIR/x86_64/
-
 # sync the repo state back to s3
-aws --region "${REGION}" s3 sync $TARGET_DIR s3://$TARGET_PREFIX
+aws --profile alces-flight --region "${REGION}" s3 sync --delete $TARGET_DIR s3://$TARGET_PREFIX --acl public-read
+
+# Notify slack
+if [ "$ARCH" == "noarch" ] ; then ARCH="x86_64" ; fi
+export PACKAGE=$(echo "$RPM" |sed 's/.*\///g')
+export REPO=$(echo "$TARGET_PREFIX" |sed 's/.*org\///g')
+export PACKAGE_URL=https://$TARGET_PREFIX/$ARCH/$PACKAGE
+$SCRIPT_DIR/slack-update.sh 
