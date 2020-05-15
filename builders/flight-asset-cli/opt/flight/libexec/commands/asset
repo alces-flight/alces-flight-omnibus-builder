@@ -29,10 +29,10 @@
 # For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
-
 # "Temporarily" disable deprecation warnings due to ruby 2.7
 export RUBYOPT='-W:no-deprecated -W:no-experimental'
 
-cd /opt/flight/opt/asset-cli
-flexec bundle exec bin/flight-asset-with-config /opt/flight/etc/asset-cli.yaml "$@"
-
+export FLIGHT_CWD=$(pwd)
+cd /opt/flight/opt/asset
+export FLIGHT_PROGRAM_NAME="${flight_NAME} $(basename $0)"
+flexec bundle exec bin/flight-asset-with-config /opt/flight/etc/asset.yml "$@"

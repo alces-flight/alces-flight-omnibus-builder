@@ -1,5 +1,5 @@
 #==============================================================================
-# Copyright (C) 2019-present Alces Flight Ltd.
+# Copyright (C) 2020-present Alces Flight Ltd.
 #
 # This file is part of Alces Flight Omnibus Builder.
 #
@@ -24,47 +24,21 @@
 # For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
-name 'flight-asset-cli'
-maintainer 'Alces Flight Ltd'
-homepage 'https://github.com/alces-flight/flight-asset-cli'
-friendly_name 'Flight Asset CLI'
+name "enforce-flight-runway"
+description "enforce existence of flight-runway"
+default_version "1.0.0"
 
-install_dir '/opt/flight/opt/asset-cli'
+license :project_license
+skip_transitive_dependency_licensing true
 
-VERSION = '0.2.1'
-
-build_version VERSION
-build_iteration 1
-
-override 'flight-asset-cli', version: VERSION
-
-dependency 'preparation'
-dependency 'flight-asset-cli'
-dependency 'version-manifest'
-
-license 'EPL-2.0'
-license_file 'LICENSE.txt'
-
-description 'Manage interactive GUI desktop sessions'
-
-exclude '**/.git'
-exclude '**/.gitkeep'
-exclude '**/bundler/git'
-
-runtime_dependency 'flight-runway >= 1.1.0, flight-runway < 1.2.0'
-
-# Updates the version in the libexec file
-cmd_path = File.expand_path('../../opt/flight/libexec/commands/asset', __dir__)
-cmd = File.read(cmd_path)
-          .sub(/^: VERSION: [[:graph:]]+$/, ": VERSION: #{VERSION}")
-File.write cmd_path, cmd
-
-# Includes the static files
-require 'find'
-Find.find('opt') do |o|
-  extra_package_file(o) if File.file?(o)
-end
-
-package :rpm do
-  vendor 'Alces Flight Ltd'
+build do
+  block do
+    raise "Flight Runway is not installed!" if ! File.exists?('/opt/flight/bin/flight')
+    bundle_version = Bundler.with_unbundled_env do
+      `/opt/flight/bin/bundle --version | sed 's/Bundler version //g'`.chomp
+    end
+    if bundle_version != '2.1.4'
+      raise "Flight Runway has incorrect bundle version: #{bundle_version} (expected 2.1.4)"
+    end
+  end
 end

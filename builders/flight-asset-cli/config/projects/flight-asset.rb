@@ -24,13 +24,51 @@
 # For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
-name "flight-runway"
-default_version "0.0.0"
+name 'flight-asset'
+maintainer 'Alces Flight Ltd'
+homepage 'https://github.com/alces-flight/flight-asset-cli'
+friendly_name 'Flight Asset'
 
-Dir.mktmpdir do |tmpdir|
-  source path: tmpdir
+install_dir '/opt/flight/opt/asset'
+
+VERSION = '0.3.3'
+override 'flight-asset-cli', version: VERSION
+
+build_version VERSION
+build_iteration 1
+
+dependency 'preparation'
+dependency 'flight-asset-cli'
+dependency 'version-manifest'
+
+license 'EPL-2.0'
+license_file 'LICENSE.txt'
+
+description 'Manage Flight Center asset records'
+
+exclude '**/.git'
+exclude '**/.gitkeep'
+exclude '**/bundler/git'
+
+runtime_dependency 'flight-runway'
+runtime_dependency 'flight-ruby-system-2.0'
+
+# Updates the version in the libexec file
+cmd_path = File.expand_path('../../opt/flight/libexec/commands/asset', __dir__)
+cmd = File.read(cmd_path)
+          .sub(/^: VERSION: [[:graph:]]+$/, ": VERSION: #{VERSION}")
+File.write cmd_path, cmd
+
+# Includes the static files
+require 'find'
+Find.find('opt') do |o|
+  extra_package_file(o) if File.file?(o)
 end
 
-build do
-  raise "Flight Runway is not installed!" if ! File.exists?('/opt/flight/bin/flight')
+package :rpm do
+  vendor 'Alces Flight Ltd'
+end
+
+package :deb do
+  vendor 'Alces Flight Ltd'
 end
