@@ -24,7 +24,7 @@
 # For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
-name 'flight-charge-clienttemplate'
+name 'flight-charge-client'
 maintainer 'Alces Flight Ltd'
 homepage 'https://github.com/alces-flight/charge-client'
 friendly_name 'Flight Desktop'
@@ -38,7 +38,7 @@ build_version VERSION
 build_iteration 1
 
 dependency 'preparation'
-dependency 'template'
+dependency 'flight-charge-client'
 dependency 'version-manifest'
 
 license 'EPL-2.0'

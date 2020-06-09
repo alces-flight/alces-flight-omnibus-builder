@@ -24,10 +24,10 @@
 # For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
-name 'template'
+name 'flight-charge-client'
 default_version '1.0.0'
 
-source git: 'https://github.com/alces-flight/template'
+source git: 'https://github.com/alces-flight/charge-client'
 
 dependency 'flight-runway'
 whitelist_file Regexp.new("vendor/ruby/.*\.so$")
