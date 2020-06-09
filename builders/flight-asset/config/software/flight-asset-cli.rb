@@ -40,13 +40,23 @@ build do
   env = with_standard_compiler_flags(with_embedded_path)
 
   # Moves the project into place
+  # We don't copy bin/ as we write our own production bin/asset in the project.
   [
-    'Gemfile', 'Gemfile.lock', 'bin', 'etc', 'lib', 'LICENSE.txt', 'README.md'
+    'Gemfile', 'Gemfile.lock', 'etc', 'lib', 'LICENSE.txt', 'README.md'
   ].each do |file|
     copy file, File.expand_path("#{install_dir}/#{file}/..")
   end
 
-  copy 'bin/flight-asset', File.expand_path('bin/flight-asset-with-config', install_dir)
+  # patch in standard program name handling
+  command %(sed -i -e "s/program :name, .*/program :name, ENV.fetch('FLIGHT_PROGRAM_NAME','asset')/g" #{install_dir}/lib/flight_asset/cli.rb)
+
+  block do
+    FileUtils.mkdir_p "#{install_dir}/bin"
+    Dir.glob(File.join(File.dirname(__FILE__), '..', '..', 'dist', 'bin', '*')).each do |path|
+      FileUtils.cp_r path, "#{install_dir}/bin"
+      FileUtils.chmod(0755, File.join("#{install_dir}/bin", File.basename(path)))
+    end
+  end
 
   # Installs the gems to the shared `vendor/share`
   flags = [

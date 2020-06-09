@@ -35,4 +35,4 @@ export RUBYOPT='-W:no-deprecated -W:no-experimental'
 export FLIGHT_CWD=$(pwd)
 cd /opt/flight/opt/asset
 export FLIGHT_PROGRAM_NAME="${flight_NAME} $(basename $0)"
-flexec bundle exec bin/flight-asset-with-config /opt/flight/etc/asset.yml "$@"
+flexec bundle exec bin/asset "$@"
