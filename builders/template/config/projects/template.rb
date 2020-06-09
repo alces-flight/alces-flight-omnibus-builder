@@ -31,7 +31,10 @@ friendly_name 'Flight Desktop'
 
 install_dir '/opt/flight/opt/template'
 
-build_version '1.0.0'
+VERSION = '1.0.0'
+override 'template', version: VERSION
+
+build_version VERSION
 build_iteration 1
 
 dependency 'preparation'
