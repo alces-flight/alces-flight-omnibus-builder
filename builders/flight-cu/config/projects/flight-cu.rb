@@ -24,49 +24,51 @@
 # For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
-name 'flight-charge-client'
+name 'flight-cu'
 maintainer 'Alces Flight Ltd'
 homepage 'https://github.com/alces-flight/charge-client'
-friendly_name 'Flight Desktop'
+friendly_name 'Flight Compute Units'
 
-install_dir '/opt/flight/opt/charge'
+install_dir '/opt/flight/opt/cu'
 
 VERSION = '0.1.4'
-override 'flight-charge-client', version: VERSION
+override 'charge-client', version: VERSION
 
 build_version VERSION
 build_iteration 1
 
 dependency 'preparation'
-dependency 'flight-charge-client'
+dependency 'charge-client'
 dependency 'version-manifest'
 
 license 'EPL-2.0'
 license_file 'LICENSE.txt'
 
-description 'Manage interactive GUI desktop sessions'
+description 'Manage Flight Center compute unit balance'
 
 exclude '**/.git'
 exclude '**/.gitkeep'
 exclude '**/bundler/git'
 
 runtime_dependency 'flight-runway'
+runtime_dependency 'flight-ruby-system-2.0'
 
-%w(
-  tigervnc-server-minimal xorg-x11-xauth
-).each do |dep|
-  runtime_dependency dep
-end
+# Updates the version in the libexec file
+cmd_path = File.expand_path('../../opt/flight/libexec/commands/cu', __dir__)
+cmd = File.read(cmd_path)
+          .sub(/^: VERSION: [[:graph:]]+$/, ": VERSION: #{VERSION}")
+File.write cmd_path, cmd
 
-%w(
-  opt/flight/libexec/commands/desktop
-  opt/flight/etc/banner/tips.d/20-desktop.rc
-).each do |f|
-  extra_package_file f
+# Includes the static files
+require 'find'
+Find.find('opt') do |o|
+  extra_package_file(o) if File.file?(o)
 end
 
 package :rpm do
   vendor 'Alces Flight Ltd'
-  # repurposed 'priority' field to set RPM recommends
-  #priority 'apg python-websockify xorg-x11-apps netpbm-progs'
+end
+
+package :deb do
+  vendor 'Alces Flight Ltd'
 end

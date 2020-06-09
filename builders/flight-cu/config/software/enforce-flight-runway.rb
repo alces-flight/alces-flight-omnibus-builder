@@ -1,6 +1,5 @@
-#!/bin/sh
 #==============================================================================
-# Copyright (C) 2019-present Alces Flight Ltd.
+# Copyright (C) 2020-present Alces Flight Ltd.
 #
 # This file is part of Alces Flight Omnibus Builder.
 #
@@ -22,8 +21,24 @@
 #
 #  https://opensource.org/licenses/EPL-2.0
 #
-# For more information on <project>, please visit:
+# For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
+name "enforce-flight-runway"
+description "enforce existence of flight-runway"
+default_version "1.0.0"
 
-exit 0
+license :project_license
+skip_transitive_dependency_licensing true
+
+build do
+  block do
+    raise "Flight Runway is not installed!" if ! File.exists?('/opt/flight/bin/flight')
+    bundle_version = Bundler.with_unbundled_env do
+      `/opt/flight/bin/bundle --version | sed 's/Bundler version //g'`.chomp
+    end
+    if bundle_version != '2.1.4'
+      raise "Flight Runway has incorrect bundle version: #{bundle_version} (expected 2.1.4)"
+    end
+  end
+end

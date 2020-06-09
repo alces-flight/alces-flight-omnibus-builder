@@ -31,10 +31,34 @@ Requires: <%= name %>
 <% end -%>
 <%
 if priority != 'extra'
-  priority.split(' ').each do |name| -%>
+  provides = []
+  recommends = []
+  priority.split(' ').each do |name|
+    if name[0] == ':'
+      # this is a 'provides'
+      provides << name[1..-1]
+    else
+      # this is a 'recommends'
+      recommends << name
+    end
+  end
+
+  recommends.each do |name|
+-%>
 Recommends: <%= name %>
-<% end -%>
-<% end -%>
+<%
+  end
+-%>
+<%
+  provides.each do |name|
+-%>
+Provides: <%= name %>
+<%
+  end
+-%>
+<%
+end
+-%>
 <% conflicts.each do |name| -%>
 Conflicts: <%= name %>
 <% end -%>
