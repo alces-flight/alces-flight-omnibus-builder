@@ -1,0 +1,45 @@
+<aside class="sidenav col-12 col-md-3 col-lg-2">
+  <% if environment[:logo_url] %>
+    <div class="mb-2">
+      <img
+        src="<%= environment[:logo_url] %>"
+        alt="Environment Logo"
+        class="logo"
+        >
+      </img>
+    </div>
+  <% end %>
+  <div>
+    <% unless environment[:name].nil? %>
+      <h2>Environment</h2>
+      <ul class="w-100">
+        <li><%= environment[:name] %></li>
+      </ul>
+    <% end %>
+
+    <% unless environment[:organisation_name].nil? %>
+      <h2>Organisation</h2>
+      <ul class="w-100">
+        <li><%= environment[:organisation_name] %></li>
+      </ul>
+    <% end %>
+
+    <% if !contacts.empty? %>
+      <h2>Contacts</h2>
+      <ul class="w-100">
+        <% contacts.each do |contact| %>
+          <%= contact.compiled_content(snapshot: :pre_default) %>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <% if !links.empty? %>
+      <h2>Links</h2>
+      <ul class="w-100">
+        <% links.each do |link| %>
+          <%= link.compiled_content(snapshot: :pre_default) %>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</aside>

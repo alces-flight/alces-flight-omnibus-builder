@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Alces Flight Direct HPC Environment">
+    <meta name="author" content="Alces Flight Ltd">
+    <link rel="icon" href="/assets/img/favicon.ico">
+
+    <title>Alces Flight Direct HPC Environment<%= @item[:title].nil? ? '' : " - #{@item[:title]}" %> </title>
+
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="/assets/css/flight.css">
+    <link rel="stylesheet" href="/assets/css/fonts.css">
+    <link rel="stylesheet" href="/assets/css/app.css">
+  </head>
+  <body>
+
+    <%= render '/navbar.html.erb' %>
+
+    <main role="main" class="container-fluid">
+      <!--div class="row content mt-4">
+        <div class="centernav col-12 col-md-9 col-lg-8 offset-md-0 offset-lg-0">
+        </div>
+      </div-->
+      <div class="sessions container-fluid">
+        <div class="row">
+          <div class="col">
+            <%= yield %>
+          </div>
+          <%= render '/sidebar.html.erb' %>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container-fluid">
+        <div class="row justify-content-end">
+          <div class="col-4 text-light">
+            Alces Flight Direct &copy; 2020 Alces Flight Ltd
+          </div>
+          <div class="col-4 text-light text-right">
+            2020.2
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+    <script src="/assets/js/jquery-3.4.1.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/app.js"></script>
+  </body>
+</html>

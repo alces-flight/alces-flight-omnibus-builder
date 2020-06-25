@@ -1,0 +1,15 @@
+links:
+ - text: Documentation
+   tooltip: OpenflightHPC documentation
+   href: https://openflighthpc.org/docs/
+   external: true
+ - text: Alces Flight Center
+   tooltip: Alces Flight Center
+   href: https://center.alces-flight.com
+   external: true
+ # - text: An external link
+ #   href: http://example.com
+ #   external: true
+ # - text: An internal link
+ #   href: /some/path
+ #   external: false
