@@ -27,8 +27,13 @@
 # ==============================================================================
 set -e
 
+GENDERS_FILE=$(mktemp /tmp/flight-asset-genders.XXXXXXXX)
+GENDERS_FILE_COMPRESSED=$(mktemp /tmp/flight-asset-genders.compressed.XXXXXXXX)
 clean_up() {
-  :
+    rm "${GENDERS_FILE}"
+    if [[ -f "${GENDERS_FILE_COMPRESSED}" ]] ; then
+        rm "${GENDERS_FILE_COMPRESSED}"
+    fi
 }
 trap clean_up EXIT
 
@@ -47,32 +52,56 @@ build_genders_file() {
 }
 
 save_genders_file() {
-    build_genders_file > genders
+    build_genders_file > "${GENDERS_FILE}"
 }
 
 compress_genders_file() {
     if type nodeattr >/dev/null 2>&1 ; then
         if nodeattr 2>&1 | grep -q -- --compress-hosts ; then
-            nodeattr -f genders --compress-hosts > genders.compressed
+            nodeattr -f "${GENDERS_FILE}" --compress-hosts > "${GENDERS_FILE_COMPRESSED}"
         else
-            nodeattr -f genders --compress > genders.compressed
+            nodeattr -f "${GENDERS_FILE}" --compress > "${GENDERS_FILE_COMPRESSED}"
         fi
-        mv -f genders.compressed genders
+        mv -f "${GENDERS_FILE_COMPRESSED}" "${GENDERS_FILE}"
     fi
 }
 
 install_genders_file() {
-    pdcp -g all -F ./genders ./genders "${flight_ROOT}"/etc/genders
+    pdcp -g all -F "${GENDERS_FILE}" "${GENDERS_FILE}" "${flight_ROOT}"/etc/genders
+}
+
+sanity_check() {
+    if type pdcp >/dev/null 2>&1 ; then
+        # We have `pdcp` available.
+        :
+    else
+        echo "pdcp command not found." 2>&1
+        echo "Ensure pdcp is available on \$PATH and try again." 2>&1
+        exit 1
+    fi
+    set +e
+    local exit_code
+    "${flight_ROOT}"/bin/flight asset show-asset non-existant-68b329 1>/dev/null 2>&1
+    exit_code=$?
+    set -e
+    if [ $exit_code -eq 5 ] ; then
+        echo "flight asset has not been configured for the current user"
+        exit 2
+    fi
+    if [ $exit_code -ne 0 ] ; then
+        echo "Unexpected error when running 'flight asset' "
+        exit 2
+    fi
 }
 
 main() {
+    sanity_check
     echo "Building genders file"
     save_genders_file
     echo "Compressing genders file"
     compress_genders_file
-    echo "Genders file saved to $(pwd)/genders"
     if type nodeattr >/dev/null 2>&1 ; then
-        echo "Copying genders file to $(nodeattr -f ./genders -q all)"
+        echo "Copying genders file to $(nodeattr -f "${GENDERS_FILE}" -q all)"
     else
         echo "Copying genders file"
     fi
