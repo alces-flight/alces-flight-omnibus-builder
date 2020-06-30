@@ -42,10 +42,14 @@ build_genders_file() {
         | awk '
             BEGIN { FS="\t"; OFS="\t" }
             {
-                if (length($5) > 0) {
-                    printf "%s\t%s,all\n",$1,$5
+                if ($1 ~ /\./) { 
+                    printf "Ignoring %s: name contains a .\n",$1 >> "/dev/stderr"
                 } else {
-                    printf "%s\tall\n",$1
+                    if (length($5) > 0) {
+                        printf "%s\t%s,all\n",$1,$5
+                    } else {
+                        printf "%s\tall\n",$1
+                    }
                 }
             }
         '
@@ -85,7 +89,7 @@ sanity_check() {
     exit_code=$?
     set -e
     if [ $exit_code -eq 5 ] ; then
-        echo "flight asset has not been configured for the current user"
+        echo "flight asset has not been configured for the root user"
         exit 2
     fi
     if [ $exit_code -ne 0 ] ; then
