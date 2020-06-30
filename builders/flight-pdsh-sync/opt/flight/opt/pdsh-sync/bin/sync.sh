@@ -92,6 +92,10 @@ sanity_check() {
         echo "flight asset has not been configured for the root user"
         exit 2
     fi
+    if [ $exit_code -eq 21 ] ; then
+        # Exactly the error we should have for a configured flight asset.
+        exit 2
+    fi
     if [ $exit_code -ne 0 ] ; then
         echo "Unexpected error when running 'flight asset' "
         exit 2

@@ -35,7 +35,7 @@ VERSION = '0.1.0'
 override 'flight-pdsh-sync', version: VERSION
 
 build_version VERSION
-build_iteration 2
+build_iteration 3
 
 dependency 'preparation'
 dependency 'flight-pdsh-sync'
