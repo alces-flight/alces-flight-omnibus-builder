@@ -30,9 +30,9 @@ set -e
 GENDERS_FILE=$(mktemp /tmp/flight-asset-genders.XXXXXXXX)
 GENDERS_FILE_COMPRESSED=$(mktemp /tmp/flight-asset-genders.compressed.XXXXXXXX)
 clean_up() {
-    rm "${GENDERS_FILE}"
+    sudo rm "${GENDERS_FILE}"
     if [[ -f "${GENDERS_FILE_COMPRESSED}" ]] ; then
-        rm "${GENDERS_FILE_COMPRESSED}"
+        sudo rm "${GENDERS_FILE_COMPRESSED}"
     fi
 }
 trap clean_up EXIT
@@ -71,7 +71,9 @@ compress_genders_file() {
 }
 
 install_genders_file() {
-    pdcp -g all -F "${GENDERS_FILE}" "${GENDERS_FILE}" "${flight_ROOT}"/etc/genders
+    sudo chown root:root "${GENDERS_FILE}"
+    sudo chmod go+r "${GENDERS_FILE}"
+    sudo pdcp -p -g all -F "${GENDERS_FILE}" "${GENDERS_FILE}" "${flight_ROOT}"/etc/genders
 }
 
 sanity_check() {
@@ -85,15 +87,11 @@ sanity_check() {
     fi
     set +e
     local exit_code
-    "${flight_ROOT}"/bin/flight asset show-asset non-existant-68b329 1>/dev/null 2>&1
+    "${flight_ROOT}"/bin/flight asset list-categories 1>/dev/null 2>&1
     exit_code=$?
     set -e
     if [ $exit_code -eq 5 ] ; then
-        echo "flight asset has not been configured for the root user"
-        exit 2
-    fi
-    if [ $exit_code -eq 21 ] ; then
-        # Exactly the error we should have for a configured flight asset.
+        echo "flight asset has not been configured"
         exit 2
     fi
     if [ $exit_code -ne 0 ] ; then
