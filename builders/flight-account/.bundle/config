@@ -1,0 +1,3 @@
+---
+BUNDLE_PATH: "/home/vagrant/alces-flight-omnibus-builder/vendor"
+BUNDLE_BIN: "bin"

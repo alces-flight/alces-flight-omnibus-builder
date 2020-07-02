@@ -1,0 +1,8 @@
+################################################################################
+##
+## Flight Account
+## Copyright (c) 2020-present Alces Flight Ltd
+##
+################################################################################
+flight_TIP_command="flight account"
+flight_TIP_synopsis="Alces Flight platform account management"
