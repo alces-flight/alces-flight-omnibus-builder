@@ -1,5 +1,5 @@
 #==============================================================================
-# Copyright (C) 2019-present Alces Flight Ltd.
+# Copyright (C) 2020-present Alces Flight Ltd.
 #
 # This file is part of Alces Flight Omnibus Builder.
 #
@@ -25,24 +25,30 @@
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
 
-name 'flight-asset-cli'
-default_version '2020.1'
+BINARY="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/gatherer.sh"
 
-version('2020.1') { source sha256: 'b28124b85b99ce82d853631d4f7955dbb1dfbc8c0da1c21cc9aa160a4c791c36' }
+# Moves to a local temporary directory
+pushd mktemp -d -t 'gather-XXXXXXXX'
 
-source url: "https://raw.githubusercontent.com/openflighthpc/flight-inventory-data-gatherer/#{version}/build/gather-data-bundled.sh"
+# Profile all the assets
+for asset in "$@"; do
+  echo "Import: $asset"
 
-license 'EPL-2.0'
-license_file 'LICENSE.txt'
-skip_transitive_dependency_licensing true
+  # Move the binary into place
+  bin=$(ssh $asset mktemp -t generate.XXXXXXXX.sh)
+  scp $BINARY $asset:$bin
 
-build do
-  # Copy the downloaded gather binary into bin
-  dst = File.join(install_dir, 'bin/gatherer.sh')
-  copy File.join(project_dir, 'gather-data-bundled.sh'), dst
+  # Run the binary and copy the zip down
+  ssh $asset bash $bin
+  scp $asset:/tmp/$asset.zip .
 
-  # Copy the associated files into /o/f/o/gather/libexec
-  Dir.glob(File.expand_path('../../libexec', __dir__)).each do |path|
-    copy path, File.join(install_dir, 'libexec')
-  end
-end
+  # Delete the remote binary and zip
+  ssh $asset rm -f $bin /tmp/$asset.zip
+done
+
+# Import the assets into flight-inventory
+/opt/flight/bin/flight inventory .
+
+# Remove the temporary directory
+rm -rf $(popd)
+

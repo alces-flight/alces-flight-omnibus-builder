@@ -1,5 +1,5 @@
 #==============================================================================
-# Copyright (C) 2019-present Alces Flight Ltd.
+# Copyright (C) 2020-present Alces Flight Ltd.
 #
 # This file is part of Alces Flight Omnibus Builder.
 #
@@ -25,24 +25,52 @@
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
 
-name 'flight-asset-cli'
-default_version '2020.1'
+flight='/opt/flight/bin/flight'
+exit_code=0
 
-version('2020.1') { source sha256: 'b28124b85b99ce82d853631d4f7955dbb1dfbc8c0da1c21cc9aa160a4c791c36' }
+update_asset() {
+  $flight asset update $1 --info <<INFO
+$info
+INFO
+  echo $?
+}
 
-source url: "https://raw.githubusercontent.com/openflighthpc/flight-inventory-data-gatherer/#{version}/build/gather-data-bundled.sh"
+create_asset() {
+  $flight asset create $1 --info <<INFO
+$info
+INFO
+  echo $?
+}
 
-license 'EPL-2.0'
-license_file 'LICENSE.txt'
-skip_transitive_dependency_licensing true
+for asset in "$@"; do
+  # Renders the info field
+  info=$($flight inventory show $asset)
 
-build do
-  # Copy the downloaded gather binary into bin
-  dst = File.join(install_dir, 'bin/gatherer.sh')
-  copy File.join(project_dir, 'gather-data-bundled.sh'), dst
+  if [ $? -eq 0 ]; then
+    update_code=$(update_asset $asset)
+    case $update_code in
+    0)
+      echo "Exported: $asset"
+      ;;
+    21)
+      create_code=$(create_asset $asset)
+      if [ $create_code -eq 0]; then
+        echo "Exported: $asset"
+      else
+        echo "Failed to create: $asset" >&2
+        exit_code=1
+      fi
+      ;;
+    *)
+      echo "Failed to update: $asset" >&2
+      exit_code=1
+      ;;
+    esac
+  else
+    echo "Failed to render: $asset" >&2
+    exit_code=1
+  fi
+done
 
-  # Copy the associated files into /o/f/o/gather/libexec
-  Dir.glob(File.expand_path('../../libexec', __dir__)).each do |path|
-    copy path, File.join(install_dir, 'libexec')
-  end
-end
+exit $exit_code
+
