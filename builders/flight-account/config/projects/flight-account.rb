@@ -31,7 +31,7 @@ friendly_name 'Flight Account'
 
 install_dir '/opt/flight/opt/account'
 
-VERSION = '1.3.0-rc1'
+VERSION = '1.3.0-rc2'
 override 'flight-account', version: VERSION
 
 build_version VERSION
