@@ -25,51 +25,22 @@
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
 
-# Moves to a local temporary directory
-flight="bash $( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/flight-wrapper.sh"
-exit_code=0
-local_dir=$(mktemp -d -t 'asset-info-XXXXXXXX')
-pushd $local_dir >/dev/null 2>&1
+# This is a "temporary" fix that avoids the use of `flexec` bash function
+# The `flexec` script file is fine
+# https://github.com/openflighthpc/openflight-omnibus-builder/issues/33
 
-# Render the assets
-for asset in "$@"; do
-  $flight inventory show $asset > ./$asset
-  if [ $? -ne 0 ]; then
-    echo "Failed to render: $asset"
-    exit_code=1
-  fi
-done
+# Squash ruby deprecation warnings
+export RUBYOPT='-W:no-deprecated -W:no-experimental'
 
-# Uploads the info
-for path in *; do
-  asset=$(basename $path)
+# Use the first argument as the app name
+app_name=$1
+shift
 
-  # Attempts an update
-  $flight asset update $asset --info @$path 2>/dev/null >&2
-  case $? in
-  0)
-    echo "Exported (update): $asset"
-    ;;
-  21)
-    # Attempts a create
-    $flight asset create $asset --info @$path 2>/dev/null >&2
-    if [ $? -eq 0 ]; then
-      echo "Exported (create): $asset"
-    else
-      echo "Failed to export: $asset"
-      exit_code=1
-    fi
-    ;;
-  *)
-    echo "Failed to export: $asset"
-    exit_code=1
-    ;;
-  esac
-done
+# Save the current directory and move to the app dir
+export FLIGHT_CWD=$(pwd)
+cd /opt/flight/opt/$app_name
 
-# Remove the temporary directory
-popd >/dev/null 2>&1
-rm -rf $local_dir
-
-exit $exit_code
+# Set the program name and execute
+export FLIGHT_PROGRAM_NAME="${flight_NAME} $app_name"
+/opt/flight/bin/flexec bundle exec bin/$app_name "$@"
 
