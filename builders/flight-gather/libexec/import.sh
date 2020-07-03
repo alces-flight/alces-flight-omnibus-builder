@@ -25,10 +25,11 @@
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
 
-BINARY="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/gatherer.sh"
+BINARY="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/bin/gatherer.sh"
 
 # Moves to a local temporary directory
-pushd $(mktemp -d -t 'gather-XXXXXXXX')
+local_dir=$(mktemp -d -t 'gather-XXXXXXXX')
+pushd $local_dir >/dev/null 2>&1
 
 # Profile all the assets
 for asset in "$@"; do
@@ -47,8 +48,9 @@ for asset in "$@"; do
 done
 
 # Import the assets into flight-inventory
-/opt/flight/bin/flight inventory .
+ls $local_dir/*.zip | xargs -n 1 /opt/flight/bin/flight inventory import
 
 # Remove the temporary directory
-rm -rf $(popd)
+popd >/dev/null 2>&1
+rm -rf $local_dir
 
