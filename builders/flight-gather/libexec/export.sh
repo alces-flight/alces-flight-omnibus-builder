@@ -26,14 +26,13 @@
 #===============================================================================
 
 # Moves to a local temporary directory
-flight="bash $( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/flight-wrapper.sh"
 exit_code=0
 local_dir=$(mktemp -d -t 'asset-info-XXXXXXXX')
 pushd $local_dir >/dev/null 2>&1
 
 # Render the assets
 for asset in "$@"; do
-  $flight inventory show $asset > ./$asset
+  flight inventory show $asset > ./$asset
   if [ $? -ne 0 ]; then
     echo "Failed to render: $asset"
     exit_code=1
@@ -45,14 +44,14 @@ for path in *; do
   asset=$(basename $path)
 
   # Attempts an update
-  $flight asset update $asset --info @$path 2>/dev/null >&2
+  flight asset update $asset --info @$path 2>/dev/null >&2
   case $? in
   0)
     echo "Exported (update): $asset"
     ;;
   21)
     # Attempts a create
-    $flight asset create $asset --info @$path 2>/dev/null >&2
+    flight asset create $asset --info @$path 2>/dev/null >&2
     if [ $? -eq 0 ]; then
       echo "Exported (create): $asset"
     else
