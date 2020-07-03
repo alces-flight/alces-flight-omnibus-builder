@@ -28,7 +28,7 @@
 BINARY="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/gatherer.sh"
 
 # Moves to a local temporary directory
-pushd mktemp -d -t 'gather-XXXXXXXX'
+pushd $(mktemp -d -t 'gather-XXXXXXXX')
 
 # Profile all the assets
 for asset in "$@"; do

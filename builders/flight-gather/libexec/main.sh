@@ -25,7 +25,7 @@
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../.." >/dev/null 2>&1 && pwd )"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 usage() {
     local prog
@@ -38,12 +38,12 @@ main() {
     case "$1" in
         import)
             shift
-            $DIR/import.sh "${@}"
+            bash $DIR/import.sh "${@}"
             ;;
 
         export)
             shift
-            "$DIR/export.sh" "${@}"
+            bash "$DIR/export.sh" "${@}"
             ;;
 
         --help | help)

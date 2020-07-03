@@ -31,6 +31,5 @@
 #===============================================================================
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../.." >/dev/null 2>&1 && pwd )"
-
-exec  $DIR/opt/gather/libexec/main.sh "$@"
+exec bash $DIR/opt/gather/libexec/main.sh "$@"
 
