@@ -24,51 +24,25 @@
 # For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
-name 'flight-asset'
-maintainer 'Alces Flight Ltd'
-homepage 'https://github.com/alces-flight/flight-asset-cli'
-friendly_name 'Flight Asset'
 
-install_dir '/opt/flight/opt/asset'
+name 'flight-asset-cli'
+default_version '2020.1'
 
-VERSION = '0.5.1'
-override 'flight-asset-cli', version: VERSION
+version('2020.1') { source sha256: 'b28124b85b99ce82d853631d4f7955dbb1dfbc8c0da1c21cc9aa160a4c791c36' }
 
-build_version VERSION
-build_iteration 0
-
-dependency 'preparation'
-dependency 'flight-asset-cli'
-dependency 'version-manifest'
+source url: "https://raw.githubusercontent.com/openflighthpc/flight-inventory-data-gatherer/#{version}/build/gather-data-bundled.sh"
 
 license 'EPL-2.0'
 license_file 'LICENSE.txt'
+skip_transitive_dependency_licensing true
 
-description 'Manage Flight Center asset records'
+build do
+  # Copy the downloaded gather binary into bin
+  dst = File.join(install_dir, 'bin/gatherer.sh')
+  copy File.join(project_dir, 'gather-data-bundled.sh'), dst
 
-exclude '**/.git'
-exclude '**/.gitkeep'
-exclude '**/bundler/git'
-
-runtime_dependency 'flight-runway'
-runtime_dependency 'flight-ruby-system-2.0'
-
-# Updates the version in the libexec file
-cmd_path = File.expand_path('../../opt/flight/libexec/commands/asset', __dir__)
-cmd = File.read(cmd_path)
-          .sub(/^: VERSION: [[:graph:]]+$/, ": VERSION: #{VERSION}")
-File.write cmd_path, cmd
-
-# Includes the static files
-require 'find'
-Find.find('opt') do |o|
-  extra_package_file(o) if File.file?(o)
-end
-
-package :rpm do
-  vendor 'Alces Flight Ltd'
-end
-
-package :deb do
-  vendor 'Alces Flight Ltd'
+  # Copy the associated files into /o/f/o/gather/libexec
+  Dir.glob(File.expand_path('../../libexec', __dir__)).each do |path|
+    copy path, File.join(install_dir, 'libexec')
+  end
 end

@@ -24,37 +24,44 @@
 # For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
-name 'flight-asset'
+name 'flight-gather'
 maintainer 'Alces Flight Ltd'
-homepage 'https://github.com/alces-flight/flight-asset-cli'
-friendly_name 'Flight Asset'
+homepage 'https://github.com/alces-flight/alces-flight-omnibus-builder'
+friendly_name 'Flight Gather'
 
-install_dir '/opt/flight/opt/asset'
+install_dir '/opt/flight/opt/gather'
 
-VERSION = '0.5.1'
-override 'flight-asset-cli', version: VERSION
+VERSION = '0.1.2'
 
 build_version VERSION
 build_iteration 0
 
 dependency 'preparation'
-dependency 'flight-asset-cli'
+dependency 'flight-gather'
 dependency 'version-manifest'
 
 license 'EPL-2.0'
 license_file 'LICENSE.txt'
 
-description 'Manage Flight Center asset records'
+description 'Manage interactive GUI desktop sessions'
 
 exclude '**/.git'
 exclude '**/.gitkeep'
 exclude '**/bundler/git'
 
-runtime_dependency 'flight-runway'
-runtime_dependency 'flight-ruby-system-2.0'
+runtime_dependency 'flight-asset >= 0.5.0, flight-asset < 0.6.0'
+runtime_dependency 'flight-inventory >= 2.0.0, flight-inventory < 3.0.0'
+
+if ohai['platform_family'] == 'rhel'
+  runtime_dependency 'flight-runway >= 1.1.4'
+elsif ohai['platform_family'] == 'debian'
+  runtime_dependency "flight-runway (>= 1.1.4)"
+else
+  raise "Unrecognised platform: #{ohai['platform_family']}"
+end
 
 # Updates the version in the libexec file
-cmd_path = File.expand_path('../../opt/flight/libexec/commands/asset', __dir__)
+cmd_path = File.expand_path('../../opt/flight/libexec/commands/gather', __dir__)
 cmd = File.read(cmd_path)
           .sub(/^: VERSION: [[:graph:]]+$/, ": VERSION: #{VERSION}")
 File.write cmd_path, cmd
@@ -66,9 +73,5 @@ Find.find('opt') do |o|
 end
 
 package :rpm do
-  vendor 'Alces Flight Ltd'
-end
-
-package :deb do
   vendor 'Alces Flight Ltd'
 end

@@ -1,5 +1,5 @@
 #==============================================================================
-# Copyright (C) 2019-present Alces Flight Ltd.
+# Copyright (C) 2020-present Alces Flight Ltd.
 #
 # This file is part of Alces Flight Omnibus Builder.
 #
@@ -24,51 +24,26 @@
 # For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
-name 'flight-asset'
-maintainer 'Alces Flight Ltd'
-homepage 'https://github.com/alces-flight/flight-asset-cli'
-friendly_name 'Flight Asset'
 
-install_dir '/opt/flight/opt/asset'
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-VERSION = '0.5.1'
-override 'flight-asset-cli', version: VERSION
+# Moves to a local temporary directory
+local_dir=$(mktemp -d -t 'gather-XXXXXXXX')
+pushd $local_dir >/dev/null 2>&1
 
-build_version VERSION
-build_iteration 0
+# Profile all the assets
+for asset in "$@"; do
+  if bash $DIR/profile.sh $asset; then
+    echo "Import: $asset"
+  else
+    echo "Failed: $asset"
+  fi
+done
 
-dependency 'preparation'
-dependency 'flight-asset-cli'
-dependency 'version-manifest'
+# Import the assets into flight-inventory
+ls $local_dir/*.zip | xargs -n 1 /opt/flight/bin/flight inventory import
 
-license 'EPL-2.0'
-license_file 'LICENSE.txt'
+# Remove the temporary directory
+popd >/dev/null 2>&1
+rm -rf $local_dir
 
-description 'Manage Flight Center asset records'
-
-exclude '**/.git'
-exclude '**/.gitkeep'
-exclude '**/bundler/git'
-
-runtime_dependency 'flight-runway'
-runtime_dependency 'flight-ruby-system-2.0'
-
-# Updates the version in the libexec file
-cmd_path = File.expand_path('../../opt/flight/libexec/commands/asset', __dir__)
-cmd = File.read(cmd_path)
-          .sub(/^: VERSION: [[:graph:]]+$/, ": VERSION: #{VERSION}")
-File.write cmd_path, cmd
-
-# Includes the static files
-require 'find'
-Find.find('opt') do |o|
-  extra_package_file(o) if File.file?(o)
-end
-
-package :rpm do
-  vendor 'Alces Flight Ltd'
-end
-
-package :deb do
-  vendor 'Alces Flight Ltd'
-end

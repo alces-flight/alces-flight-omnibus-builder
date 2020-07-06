@@ -24,51 +24,56 @@
 # For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
-name 'flight-asset'
-maintainer 'Alces Flight Ltd'
-homepage 'https://github.com/alces-flight/flight-asset-cli'
-friendly_name 'Flight Asset'
 
-install_dir '/opt/flight/opt/asset'
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-VERSION = '0.5.1'
-override 'flight-asset-cli', version: VERSION
+usage() {
+    local prog
+    prog="flight gather"
+    echo "Usage: ${prog} import|export ASSET_NAME..."
+    echo "Import inventory data from the cluster and export to Flight Center"
+}
 
-build_version VERSION
-build_iteration 0
+runner() {
+  # Extracts the scripts path
+  script="$1"
+  shift
 
-dependency 'preparation'
-dependency 'flight-asset-cli'
-dependency 'version-manifest'
+  # Ensures an asset has been provided
+  if [ $# -eq 0 ]; then
+    usage
+    exit 1
+  else
+    bash $script "$@"
+  fi
+}
 
-license 'EPL-2.0'
-license_file 'LICENSE.txt'
+main() {
+    case "$1" in
+        import)
+            shift
+            runner "$DIR/import.sh" "$@"
+            ;;
 
-description 'Manage Flight Center asset records'
+        export)
+            shift
+            runner "$DIR/export.sh" "$@"
+            ;;
 
-exclude '**/.git'
-exclude '**/.gitkeep'
-exclude '**/bundler/git'
+        --help | help)
+            usage
+            exit 0
+            ;;
 
-runtime_dependency 'flight-runway'
-runtime_dependency 'flight-ruby-system-2.0'
+        *)
+            usage
+            exit 127
+            ;;
+    esac
+}
 
-# Updates the version in the libexec file
-cmd_path = File.expand_path('../../opt/flight/libexec/commands/asset', __dir__)
-cmd = File.read(cmd_path)
-          .sub(/^: VERSION: [[:graph:]]+$/, ": VERSION: #{VERSION}")
-File.write cmd_path, cmd
 
-# Includes the static files
-require 'find'
-Find.find('opt') do |o|
-  extra_package_file(o) if File.file?(o)
-end
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi
 
-package :rpm do
-  vendor 'Alces Flight Ltd'
-end
-
-package :deb do
-  vendor 'Alces Flight Ltd'
-end
