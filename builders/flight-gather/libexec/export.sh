@@ -32,8 +32,10 @@ pushd $local_dir >/dev/null 2>&1
 
 # Render the assets
 for asset in "$@"; do
-  flight inventory show $asset > ./$asset
-  if [ $? -ne 0 ]; then
+  info=$(flight inventory show $asset 2>/dev/null)
+  if [ $? -eq 0 ]; then
+    echo $info > ./$asset
+  else
     echo "Failed to render: $asset"
     exit_code=1
   fi
