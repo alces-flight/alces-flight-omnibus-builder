@@ -72,5 +72,21 @@ done
 popd >/dev/null 2>&1
 rm -rf $local_dir
 
+# Determines assets with missing groups
+sorted_assets=$(echo "$@" | xargs -n 1 | sort)
+sorted_missing=$(flight asset list-assets --group '' | cut -f1 | xargs -n1 | sort)
+missing=$(comm -12 <(echo $sorted_assets | xargs -n1) <(echo $sorted_missing | xargs -n1))
+
+if [ -n "$missing" ]; then
+  cat <<HERE >&2
+
+The following assets have not been assigned to a group:
+$(echo $missing | xargs)
+
+You may add them to a group with:
+flight asset move ASSET GROUP
+HERE
+fi
+
 exit $exit_code
 

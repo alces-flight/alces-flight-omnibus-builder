@@ -31,7 +31,7 @@ friendly_name 'Flight Gather'
 
 install_dir '/opt/flight/opt/gather'
 
-VERSION = '0.1.1'
+VERSION = '0.1.2'
 
 build_version VERSION
 build_iteration 0
