@@ -1,5 +1,5 @@
 #==============================================================================
-# Copyright (C) 2020-present Alces Flight Ltd.
+# Copyright (C) 2019-present Alces Flight Ltd.
 #
 # This file is part of Alces Flight Omnibus Builder.
 #
@@ -25,25 +25,26 @@
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+set -e
 
-# Moves to a local temporary directory
-local_dir=$(mktemp -d -t 'gather-XXXXXXXX')
-pushd $local_dir >/dev/null 2>&1
+# Define the paths
+BINARY="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/bin/gatherer.sh"
+bin=/tmp/generate.sh
+zip=/tmp/$asset.zip
 
-# Profile all the assets
-for asset in "$@"; do
-  if bash $DIR/profile.sh ; then
-    echo "Import: $asset"
-  else
-    echo "Failed: $asset"
-  fi
-done
+# Removes the old binary and zip (if required)
+cleanup() { ssh rm -f $bin $zip }
+cleanup
 
-# Import the assets into flight-inventory
-ls $local_dir/*.zip | xargs -n 1 /opt/flight/bin/flight inventory import
+# Move the binary into place
+scp $BINARY $asset:$bin
 
-# Remove the temporary directory
-popd >/dev/null 2>&1
-rm -rf $local_dir
+# Run the binary
+ssh $asset bash $bin
+
+# Copy the results down
+scp $asset:$zip .
+
+# Runs the cleanup
+cleanup
 
