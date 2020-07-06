@@ -70,21 +70,7 @@ compress_genders_file() {
     fi
 }
 
-install_genders_file() {
-    sudo chown root:root "${GENDERS_FILE}"
-    sudo chmod go+r "${GENDERS_FILE}"
-    sudo pdcp -p -g all -F "${GENDERS_FILE}" "${GENDERS_FILE}" "${flight_ROOT}"/etc/genders
-}
-
 sanity_check() {
-    if type pdcp >/dev/null 2>&1 ; then
-        # We have `pdcp` available.
-        :
-    else
-        echo "pdcp command not found." 2>&1
-        echo "Ensure pdcp is available on \$PATH and try again." 2>&1
-        exit 1
-    fi
     set +e
     local exit_code
     "${flight_ROOT}"/bin/flight asset list-categories 1>/dev/null 2>&1
@@ -100,18 +86,55 @@ sanity_check() {
     fi
 }
 
+usage() {
+    local progname
+    progname="${FLIGHT_PROGRAM_NAME:-flight-genders}"
+    cat <<-EOF
+
+USAGE:
+
+  ${progname} [FILE]
+
+DESCRIPTION:
+
+  Generate a genders file from Flight Center asset group data.
+
+  If FILE is given the results are written to FILE, otherwise to standard
+  output.
+EOF
+}
+
 main() {
-    sanity_check
-    echo "Building genders file"
-    save_genders_file
-    echo "Compressing genders file"
-    compress_genders_file
-    if type nodeattr >/dev/null 2>&1 ; then
-        echo "Copying genders file to $(nodeattr -f "${GENDERS_FILE}" -q all)"
-    else
-        echo "Copying genders file"
+    case "$1" in
+        --help | -h | help)
+            usage
+            exit 0
+            ;;
+
+        --* | -*)
+            echo "Unknown option: ${1}" >&2
+            usage
+            exit 1
+            ;;
+
+        *)
+            ;;
+    esac
+
+    if [ "$#" -gt 1 ]; then
+        echo "Incorrect number of arguments" >&2
+        usage
+        exit 1
     fi
-    install_genders_file
+
+    sanity_check
+    save_genders_file
+    compress_genders_file
+    if [ "$#" -eq 1 ]; then
+        cat ${GENDERS_FILE} > "${1}"
+    else
+        cat ${GENDERS_FILE}
+    fi
 }
 
 

@@ -24,7 +24,7 @@
 # For more information on OpenFlight Omnibus Builder, please visit:
 # https://github.com/openflighthpc/openflight-omnibus-builder
 #===============================================================================
-name 'flight-pdsh-sync'
+name 'flight-genders'
 default_version '0.1.0'
 
 # dependency 'zlib'

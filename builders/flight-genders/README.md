@@ -1,7 +1,7 @@
-flight-pdsh-sync Omnibus project
+flight-genders Omnibus project
 ===========================
 This project creates full-stack platform-specific packages for
-`flight-pdsh-sync`!
+`flight-genders`!
 
 Installation
 ------------
@@ -19,7 +19,7 @@ Usage
 You create a platform-specific package using the `build project` command:
 
 ```shell
-$ bin/omnibus build flight-pdsh-sync
+$ bin/omnibus build flight-genders
 ```
 
 The platform/architecture type of the package created will match the platform
@@ -33,15 +33,15 @@ You can clean up all temporary files generated during the build process with
 the `clean` command:
 
 ```shell
-$ bin/omnibus clean flight-pdsh-sync
+$ bin/omnibus clean flight-genders
 ```
 
 Adding the `--purge` purge option removes __ALL__ files generated during the
-build including the project install directory (`/opt/flight-pdsh-sync`) and
+build including the project install directory (`/opt/flight-genders`) and
 the package cache directory (`/var/cache/omnibus/pkg`):
 
 ```shell
-$ bin/omnibus clean flight-pdsh-sync --purge
+$ bin/omnibus clean flight-genders --purge
 ```
 
 ### Publish

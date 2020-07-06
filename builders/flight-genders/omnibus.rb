@@ -41,7 +41,7 @@ append_timestamp false
 #
 # Uncomment this line to change the default base directory to "local"
 # -------------------------------------------------------------------
-base_dir '/home/vagrant/flight-pdsh-sync/local'
+base_dir '/home/vagrant/flight-genders/local'
 #
 # Alternatively you can tune the individual values
 # ------------------------------------------------

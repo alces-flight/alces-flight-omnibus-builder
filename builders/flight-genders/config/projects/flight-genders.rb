@@ -24,34 +24,34 @@
 # For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
-name 'flight-pdsh-sync'
+name 'flight-genders'
 maintainer 'Alces Flight Ltd'
-homepage 'https://github.com/openflighthpc/openflight-omnibus-builder/blob/master/builders/flight-pdsh-sync/README.md'
-friendly_name 'Flight pdsh sync'
+homepage 'https://github.com/openflighthpc/openflight-omnibus-builder/blob/master/builders/flight-genders/README.md'
+friendly_name 'Flight genders'
 
-install_dir '/opt/flight/opt/pdsh-sync'
+install_dir '/opt/flight/opt/genders'
 
 VERSION = '0.1.0'
-override 'flight-pdsh-sync', version: VERSION
+override 'flight-genders', version: VERSION
 
 build_version VERSION
 build_iteration 4
 
 dependency 'preparation'
-dependency 'flight-pdsh-sync'
+dependency 'flight-genders'
 dependency 'version-manifest'
 
 license 'EPL-2.0'
 license_file 'LICENSE.txt'
 
-description 'Synchronise pdsh/genders data from Flight Center across a cluster'
+description 'Generate a genders file from Flight Center asset group data'
 
 exclude '**/.git'
 exclude '**/.gitkeep'
 exclude '**/bundler/git'
 
-extra_package_file "opt/flight/libexec/commands/pdsh-sync"
-extra_package_file "opt/flight/opt/pdsh-sync/bin/sync.sh"
+extra_package_file "opt/flight/libexec/commands/genders"
+extra_package_file "opt/flight/opt/genders/bin/generate.sh"
 
 if ohai['platform_family'] == 'rhel'
   runtime_dependency "flight-asset >= 0.5.0"

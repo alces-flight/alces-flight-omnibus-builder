@@ -1,6 +1,6 @@
 : '
-: NAME: pdsh-sync
-: SYNOPSIS: Sync Flight Center genders group data to cluster
+: NAME: genders
+: SYNOPSIS: Generate a genders file from Flight Center asset group data
 : VERSION: 0.1.0
 : '
 #==============================================================================
@@ -29,4 +29,4 @@
 # For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 # ==============================================================================
-"${flight_ROOT}"/opt/pdsh-sync/bin/sync.sh "$@"
+"${flight_ROOT}"/opt/genders/bin/generate.sh "$@"
