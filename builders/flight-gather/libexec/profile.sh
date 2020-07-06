@@ -27,13 +27,16 @@
 
 set -e
 
-# Define the paths
+# Variable Definition
+asset=$1
 BINARY="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/bin/gatherer.sh"
 bin=/tmp/generate.sh
 zip=/tmp/$asset.zip
 
 # Removes the old binary and zip (if required)
-cleanup() { ssh rm -f $bin $zip }
+cleanup() {
+  ssh $asset rm -f $bin $zip
+}
 cleanup
 
 # Move the binary into place

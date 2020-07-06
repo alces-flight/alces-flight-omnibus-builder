@@ -40,7 +40,7 @@ runner() {
   shift
 
   # Ensures an asset has been provided
-  if [ -z "$@" ]; then
+  if [ $# -eq 0 ]; then
     usage
     exit 1
   else

@@ -33,7 +33,7 @@ pushd $local_dir >/dev/null 2>&1
 
 # Profile all the assets
 for asset in "$@"; do
-  if bash $DIR/profile.sh ; then
+  if bash $DIR/profile.sh $asset; then
     echo "Import: $asset"
   else
     echo "Failed: $asset"
