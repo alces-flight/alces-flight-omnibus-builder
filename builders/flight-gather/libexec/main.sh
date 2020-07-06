@@ -41,10 +41,10 @@ runner() {
 
   # Ensures an asset has been provided
   if [ -z "$@" ]; then
-    bash $script "$@"
-  else
     usage
     exit 1
+  else
+    bash $script "$@"
   fi
 }
 
