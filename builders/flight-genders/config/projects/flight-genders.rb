@@ -31,11 +31,11 @@ friendly_name 'Flight genders'
 
 install_dir '/opt/flight/opt/genders'
 
-VERSION = '0.1.0'
+VERSION = '0.2.0'
 override 'flight-genders', version: VERSION
 
 build_version VERSION
-build_iteration 4
+build_iteration 1
 
 dependency 'preparation'
 dependency 'flight-genders'
@@ -51,7 +51,7 @@ exclude '**/.gitkeep'
 exclude '**/bundler/git'
 
 extra_package_file "opt/flight/libexec/commands/genders"
-extra_package_file "opt/flight/opt/genders/bin/generate.sh"
+extra_package_file "opt/flight/opt/genders/bin/main.sh"
 
 if ohai['platform_family'] == 'rhel'
   runtime_dependency "flight-asset >= 0.5.0"

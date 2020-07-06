@@ -93,7 +93,7 @@ usage() {
 
 USAGE:
 
-  ${progname} [FILE]
+  ${progname} render [FILE]
 
 DESCRIPTION:
 
@@ -104,23 +104,7 @@ DESCRIPTION:
 EOF
 }
 
-main() {
-    case "$1" in
-        --help | -h | help)
-            usage
-            exit 0
-            ;;
-
-        --* | -*)
-            echo "Unknown option: ${1}" >&2
-            usage
-            exit 1
-            ;;
-
-        *)
-            ;;
-    esac
-
+render() {
     if [ "$#" -gt 1 ]; then
         echo "Incorrect number of arguments" >&2
         usage
@@ -137,6 +121,30 @@ main() {
     fi
 }
 
+main() {
+    case "$1" in
+        --help | -h | help)
+            usage
+            exit 0
+            ;;
+
+        --* | -*)
+            echo "Unknown option: ${1}" >&2
+            usage
+            exit 1
+            ;;
+
+        render)
+            shift
+            render "${@}"
+            ;;
+
+        *)
+            usage
+            exit 1
+            ;;
+    esac
+}
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     main "$@"

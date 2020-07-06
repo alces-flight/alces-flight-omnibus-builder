@@ -29,4 +29,5 @@
 # For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 # ==============================================================================
-"${flight_ROOT}"/opt/genders/bin/generate.sh "$@"
+export FLIGHT_PROGRAM_NAME="${flight_NAME} $(basename $0)"
+"${flight_ROOT}"/opt/genders/bin/main.sh "$@"
