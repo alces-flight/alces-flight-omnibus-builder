@@ -34,16 +34,30 @@ usage() {
     echo "Import inventory data from the cluster and export to Flight Center"
 }
 
+runner() {
+  # Extracts the scripts path
+  script="$1"
+  shift
+
+  # Ensures an asset has been provided
+  if [ -z "$@" ]; then
+    bash $script "$@"
+  else
+    usage
+    exit 1
+  fi
+}
+
 main() {
     case "$1" in
         import)
             shift
-            bash $DIR/import.sh "${@}"
+            runner "$DIR/import.sh" "$@"
             ;;
 
         export)
             shift
-            bash "$DIR/export.sh" "${@}"
+            runner "$DIR/export.sh" "$@"
             ;;
 
         --help | help)
