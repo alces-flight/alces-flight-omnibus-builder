@@ -1,0 +1,50 @@
+Name:           flight-pam
+Version:        %{_flight_pkg_version}
+Release:        %{_flight_pkg_rel}%{?dist}
+Summary:        PAM module using the Alces Flight Platform for authentication
+Group:          OpenFlight/Environment
+License:        EPL-2.0
+
+URL:            https://github.com/alces-flight/%{name}
+%undefine _disable_source_fetch
+Source0:        https://github.com/alces-flight/%{name}/archive/%{version}.tar.gz
+Source1:        https://raw.githubusercontent.com/alces-flight/alces-flight-omnibus-builder/flight-pam/builders/flight-pam/dist/etc/pam.d/flight
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch:      x86_64
+BuildRequires:  libcurl-devel pam-devel
+Requires:       libcurl pam
+
+%description
+PAM module using the Alces Flight Platform for authentication
+
+%prep
+%setup -q -c -T
+tar --strip-components 1 -xzf %{SOURCE0} %{name}-%{version}
+install -pm 644 %{SOURCE1} .
+
+%build
+make
+
+%install
+rm -rf $RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT/opt/flight/etc/pam.d
+install -m 644 %{SOURCE1} $RPM_BUILD_ROOT/opt/flight/etc/pam.d/flight
+mkdir -p $RPM_BUILD_ROOT/opt/flight/lib64/security
+make install PREFIX=$RPM_BUILD_ROOT/opt/flight
+mkdir -p $RPM_BUILD_ROOT/opt/flight/opt/flight-pam/
+for a in LICENSE.txt README.md ; do
+  install -m 644 ${a} $RPM_BUILD_ROOT/opt/flight/opt/flight-pam/${a}
+done
+
+%clean
+make clean
+
+%files
+/opt/flight/etc/pam.d/flight
+/opt/flight/lib64/security/flight-pam.so
+/opt/flight/opt/flight-pam/LICENSE.txt
+/opt/flight/opt/flight-pam/README.md
+
+%changelog
+* Wed Jul 08 2020 Ben Armston <ben.armston@alces-flight.com> - 0.1.0-1
+- Initial Package
