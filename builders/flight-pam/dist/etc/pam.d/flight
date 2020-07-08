@@ -1,2 +1,2 @@
 #%PAM-1.0
-auth sufficient flight-pam.so url=https://accounts.alces-flight.com/sign-in
+auth sufficient /opt/flight/usr/lib/security/pam_flight.so url=https://accounts.alces-flight.com/sign-in

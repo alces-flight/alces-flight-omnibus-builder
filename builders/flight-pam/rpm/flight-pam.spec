@@ -29,7 +29,7 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/opt/flight/etc/pam.d
 install -m 644 %{SOURCE1} $RPM_BUILD_ROOT/opt/flight/etc/pam.d/flight
-mkdir -p $RPM_BUILD_ROOT/opt/flight/lib64/security
+mkdir -p $RPM_BUILD_ROOT/opt/flight/usr/lib/security
 make install PREFIX=$RPM_BUILD_ROOT/opt/flight
 mkdir -p $RPM_BUILD_ROOT/opt/flight/opt/flight-pam/
 for a in LICENSE.txt README.md ; do
@@ -41,7 +41,7 @@ make clean
 
 %files
 /opt/flight/etc/pam.d/flight
-/opt/flight/lib64/security/flight-pam.so
+/opt/flight/usr/lib/security/pam_flight.so
 /opt/flight/opt/flight-pam/LICENSE.txt
 /opt/flight/opt/flight-pam/README.md
 

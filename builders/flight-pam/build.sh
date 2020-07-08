@@ -1,6 +1,6 @@
 #!/bin/bash
 NAME=flight-pam
-VERSION=0.1.0
+VERSION=0.1.1
 REL=1
 
 cd "$(dirname "$0")"
