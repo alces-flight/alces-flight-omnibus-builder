@@ -30,7 +30,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 usage() {
     local prog
     prog="flight gather"
-    echo "Usage: ${prog} import|export ASSET_NAME..."
+    echo "Usage: ${prog} import [--verbose] ASSET_NAME..."
+    echo "  or:  ${prog} export ASSET_NAME..."
     echo "Import inventory data from the cluster and export to Flight Center"
 }
 

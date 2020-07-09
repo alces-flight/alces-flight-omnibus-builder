@@ -26,6 +26,14 @@
 #===============================================================================
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+VERBOSE=
+
+case "$1" in
+    --verbose)
+        VERBOSE=true
+        shift
+        ;;
+esac
 
 # Moves to a local temporary directory
 local_dir=$(mktemp -d -t 'gather-XXXXXXXX')
@@ -33,17 +41,30 @@ pushd $local_dir >/dev/null 2>&1
 
 # Profile all the assets
 for asset in "$@"; do
-  if bash $DIR/profile.sh $asset; then
-    echo "Import: $asset"
+  if [ -z "${VERBOSE}" ]; then
+    echo -n "Gathering: ${asset}..."
+    bash $DIR/profile.sh $asset > ${asset}.log
+    STATUS=$?
   else
-    echo "Failed: $asset"
+    echo "Gathering: ${asset}..."
+    bash $DIR/profile.sh $asset
+    STATUS=$?
+  fi
+  if [ ${STATUS} -eq 0 ]; then
+    echo "OK"
+  else
+    echo "Failed"
   fi
 done
 
-# Import the assets into flight-inventory
-ls $local_dir/*.zip | xargs -n 1 /opt/flight/bin/flight inventory import
+if test -n "$(find "${local_dir}" -maxdepth 1 -name '*.zip' -print -quit)"; then
+  # Import the assets into flight-inventory
+  ls $local_dir/*.zip | xargs -n 1 /opt/flight/bin/flight inventory import
+else
+  echo
+  echo "No files to import found."
+fi
 
 # Remove the temporary directory
 popd >/dev/null 2>&1
 rm -rf $local_dir
-
