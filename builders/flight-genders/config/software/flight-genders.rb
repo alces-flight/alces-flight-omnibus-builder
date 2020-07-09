@@ -25,10 +25,7 @@
 # https://github.com/openflighthpc/openflight-omnibus-builder
 #===============================================================================
 name 'flight-genders'
-default_version '0.1.0'
-
-# dependency 'zlib'
-# dependency 'nginx'
+default_version '1.0.0'
 
 license 'EPL-2.0'
 license_file 'LICENSE.txt'

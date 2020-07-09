@@ -31,7 +31,7 @@ friendly_name 'Flight genders'
 
 install_dir '/opt/flight/opt/genders'
 
-VERSION = '0.2.0'
+VERSION = '1.0.0'
 override 'flight-genders', version: VERSION
 
 build_version VERSION
