@@ -1,0 +1,8 @@
+################################################################################
+##
+## Flight Docs
+## Copyright (c) 2020-present Alces Flight Ltd
+##
+################################################################################
+flight_TIP_command="flight docs"
+flight_TIP_synopsis="Access your Flight Center documents"
