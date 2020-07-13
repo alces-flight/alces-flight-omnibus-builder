@@ -37,3 +37,14 @@ chown vagrant /opt/flight
 yum install -y -e0 createrepo awscli pam-devel
 
 hostname alces-flight-builder
+
+cd /opt
+git clone https://github.com/openflighthpc/openflight-repo
+cd openflight-repo
+bundle install --path=vendor
+cat <<'EOF' >> /etc/profile.d/openflight-repo.sh
+export REPO_CONFIG=/vagrant/etc/alces-flight.yml
+repo() {
+  /vagrant/scripts/repo "$@"
+}
+EOF

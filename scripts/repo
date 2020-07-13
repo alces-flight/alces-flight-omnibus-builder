@@ -1,0 +1,4 @@
+#!/bin/bash
+export FLIGHT_CWD="$(pwd)"
+cd /opt/openflight-repo
+bin/repo "$@"

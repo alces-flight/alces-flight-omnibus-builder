@@ -1,0 +1,18 @@
+---
+profile: alces-flight
+region: eu-west-1
+repos:
+  dev:
+    prefix: "alces-flight/repos/alces-flight-dev"
+    label: "Alces Flight Development Packages"
+  prod:
+    prefix: "alces-flight/repos/alces-flight"
+    label: "Alces Flight Packages"
+  vault:
+    prefix: "alces-flight/repos/alces-flight-vault"
+    label: "Alces Flight Vault Packages"
+arch:
+  ubuntu:
+    - amd64
+  centos:
+    - x86_64

@@ -4,7 +4,8 @@ if [ "$UID" != "0" ]; then
   exit 1
 fi
 yum install -y epel-release
-yum install -y -e0 https://openflighthpc.s3-eu-west-1.amazonaws.com/repos/openflight/x86_64/openflighthpc-release-1-1.noarch.rpm
-yum install -y -e0 https://alces-flight.s3-eu-west-1.amazonaws.com/repos/alces-flight/x86_64/alces-flight-release-1-1.noarch.rpm
+DIST=7
+yum install -y https://repo.openflighthpc.org/pub/centos/$DIST/openflighthpc-release-latest.noarch.rpm
+yum install -y https://alces-flight.s3-eu-west-1.amazonaws.com/repos/pub/centos/$DIST/alces-flight-release-latest.noarch.rpm
 
 yum makecache
