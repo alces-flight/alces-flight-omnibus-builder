@@ -1,0 +1,20 @@
+[alces-flight]
+name=Alces Flight - Base
+baseurl=https://alces-flight.s3-eu-west-1.amazonaws.com/repos/alces-flight/centos/$releasever/$basearch/
+enabled=1
+#gpgkey=https://alces-flight.s3-eu-west-1.amazonaws.com/repos/alces-flight-gpg-key
+gpgcheck=0
+
+[alces-flight-dev]
+name=Alces Flight - Development
+baseurl=https://alces-flight.s3-eu-west-1.amazonaws.com/repos/alces-flight-dev/centos/$releasever/$basearch/
+enabled=0
+#gpgkey=https://alces-flight.s3-eu-west-1.amazonaws.com/repos/alces-flight-gpg-key
+gpgcheck=0
+
+[alces-flight-vault]
+name=Alces Flight - Development
+baseurl=https://alces-flight.s3-eu-west-1.amazonaws.com/repos/alces-flight-vault/centos/$releasever/$basearch/
+enabled=0
+#gpgkey=https://alces-flight.s3-eu-west-1.amazonaws.com/repos/alces-flight-gpg-key
+gpgcheck=0
