@@ -1,5 +1,5 @@
 #!/bin/bash
-NAME=flight-pam
+PLUGIN=pam
 VERSION=0.1.1
 REL=1
 
@@ -8,13 +8,16 @@ d="$(pwd)"
 mkdir -p pkg
 
 build() {
+  TYPE=$1
+  NAME=flight-plugin-${TYPE}-${PLUGIN}
   if [ -f /etc/redhat-release ]; then
     echo "Building RPM package..."
     sudo yum install -y pam-devel libcurl-devel
     cd rpm
     rpmbuild -bb ${NAME}.spec \
              --define "_flight_pkg_version $VERSION" \
-             --define "_flight_pkg_rel $REL"
+             --define "_flight_pkg_rel $REL" \
+             --define "_flight_repo_name flight-pam"
     cd ..
     mv $HOME/rpmbuild/RPMS/*/${NAME}-${VERSION}*.rpm pkg
   
@@ -36,10 +39,22 @@ build() {
 
     wget https://raw.githubusercontent.com/alces-flight/alces-flight-omnibus-builder/flight-pam/builders/flight-pam/dist/etc/pam.d/flight
 
-    mkdir -p opt/flight/etc/pam.d
-    mv flight opt/flight/etc/pam.d/
-    chmod 644 opt/flight/etc/pam.d/flight
+    case $TYPE in
+      system)
+        echo "system plugin not supported"
+        exit 2
+        ;;
 
+      manual)
+        mkdir -p opt/flight/etc/pam.d
+        mv flight opt/flight/etc/pam.d/
+        chmod 644 opt/flight/etc/pam.d/flight
+
+        ;;
+      *)
+        echo "Couldn't determine plugin type to build."
+        ;;
+    esac
     mkdir -p usr/share/doc/${NAME}
     mv LICENSE.txt usr/share/doc/${NAME}
     popd
@@ -49,9 +64,9 @@ build() {
 
     mv $HOME/${NAME}/*.deb pkg
   else
-      echo "Couldn't determine type of package to build."
-      exit 1
+    echo "Couldn't determine type of package to build."
+    exit 1
   fi
 }
 
-build
+build manual
