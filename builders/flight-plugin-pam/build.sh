@@ -1,7 +1,10 @@
 #!/bin/bash
 PLUGIN=pam
+# The RPM package version
 VERSION=0.1.1
 REL=1
+# The tag in the repo to build.
+TAG=${VERSION}
 
 cd "$(dirname "$0")"
 d="$(pwd)"
@@ -17,7 +20,8 @@ build() {
     rpmbuild -bb ${NAME}.spec \
              --define "_flight_pkg_version $VERSION" \
              --define "_flight_pkg_rel $REL" \
-             --define "_flight_repo_name flight-pam"
+             --define "_flight_repo_name flight-pam" \
+             --define "_flight_repo_tag $TAG"
     cd ..
     mv $HOME/rpmbuild/RPMS/*/${NAME}-${VERSION}*.rpm pkg
   
