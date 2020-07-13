@@ -18,8 +18,7 @@ Requires:       libcurl pam
 PAM module using the Alces Flight Platform for authentication
 
 %prep
-%setup -q -c -T
-tar --strip-components 1 -xzf %{SOURCE0} %{name}-%{version}
+%setup -q
 install -pm 644 %{SOURCE1} .
 
 %build
