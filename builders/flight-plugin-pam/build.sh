@@ -1,7 +1,7 @@
 #!/bin/bash
 PLUGIN=pam
 # The RPM package version
-VERSION=0.1.1
+VERSION=0.1.2
 REL=1
 # The tag in the repo to build.
 TAG=${VERSION}
