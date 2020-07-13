@@ -9,7 +9,7 @@ License:        EPL-2.0
 URL:            https://alces-flight.com
 %undefine _disable_source_fetch
 Source0:        https://raw.githubusercontent.com/alces-flight/alces-flight-omnibus-builder/master/LICENSE.txt
-Source1:        https://raw.githubusercontent.com/alces-flight/alces-flight-omnibus-builder/builders/alces-flight-release/dist/alces-flight.repo
+Source1:        https://raw.githubusercontent.com/alces-flight/alces-flight-omnibus-builder/master/builders/alces-flight-release/dist/alces-flight.repo
 #Source2:        https://alces-flight.s3-eu-west-1.amazonaws.com/repos/alces-flight-gpg-key
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
