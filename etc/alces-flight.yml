@@ -1,4 +1,7 @@
 ---
+name: "Alces Flight"
+builder_repo: 'alces-flight/alces-flight-omnibus-builder'
+emoji: ':moosebird:'
 profile: alces-flight
 region: eu-west-1
 repos:
