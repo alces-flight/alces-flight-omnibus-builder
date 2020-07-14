@@ -25,6 +25,17 @@
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
 
+# Ensures flight-asset has been configured
+flight asset list 2>/dev/null >&2
+if [ $? -ne 0 ]; then
+  cat <<ERROR
+Failed to run 'flight asset'
+Please ensure it has been configured for the root user and try again:
+sudo $flight_ROOT/bin/flexec flight asset configure
+ERROR
+  exit 1
+fi
+
 # Moves to a local temporary directory
 exit_code=0
 local_dir=$(mktemp -d -t 'asset-info-XXXXXXXX')
