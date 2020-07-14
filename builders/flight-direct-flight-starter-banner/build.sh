@@ -6,7 +6,7 @@ mkdir -p pkg
 NAME=flight-direct-flight-starter-banner
 NOW=2020.2
 NEXT=2020.3
-VERSION=${NOW}.2
+VERSION=${NOW}.0
 REL=1
 
 if [ ! -e ${NAME}-${VERSION}.tar.gz ]; then

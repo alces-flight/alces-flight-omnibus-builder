@@ -44,8 +44,8 @@ cp -R dist/* $RPM_BUILD_ROOT
 /opt/flight/etc/assets/backgrounds/alces-flight.jpg
 
 %changelog
-* Thu May 14 2020 Mark J. Titorenko <mark.titorenko@alces-flight.com> - 2020.2.2
-- Updated to 2020.2.2 to match latest OpenFlightHPC release
+* Thu May 14 2020 Mark J. Titorenko <mark.titorenko@alces-flight.com> - 2020.2.0
+- Updated to 2020.2.0 for use with latest OpenFlightHPC release
 - Added background image asset
 * Wed Dec 11 2019 Mark J. Titorenko <mark.titorenko@alces-flight.com> - 2020.1.0
 - Updated numbering scheme
