@@ -50,6 +50,16 @@ make clean
 /opt/flight/opt/flight-pam/LICENSE.txt
 /opt/flight/opt/flight-pam/README.md
 
+%post
+if selinuxenabled ; then
+    cat <<-EOF
+SELinux is enabled.  In order for Flight PAM to work the following policies
+must be enabled:
+
+setsebool -P authlogin_yubikey 1
+EOF
+fi
+
 %changelog
 * Wed Jul 08 2020 Ben Armston <ben.armston@alces-flight.com> - 0.1.0-1
 - Initial Package
