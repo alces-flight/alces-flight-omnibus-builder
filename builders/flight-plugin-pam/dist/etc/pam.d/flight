@@ -1,2 +1,3 @@
 #%PAM-1.0
+auth optional /opt/flight/usr/lib/security/pam_flight_user_map.so mapfile=/opt/flight/etc/security/flight_user_map.conf
 auth sufficient /opt/flight/usr/lib/security/pam_flight.so url=https://accounts.alces-flight.com/sign-in
