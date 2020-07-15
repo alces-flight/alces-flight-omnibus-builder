@@ -43,8 +43,8 @@ done
 make clean
 
 %files
-/opt/flight/etc/plugin/pam.d/flight
-/opt/flight/etc/security/flight_user_map.conf
+%config(noreplace) /opt/flight/etc/plugin/pam.d/flight
+%config(noreplace) /opt/flight/etc/security/flight_user_map.conf
 /opt/flight/usr/lib/security/pam_flight.so
 /opt/flight/usr/lib/security/pam_flight_user_map.so
 /opt/flight/opt/flight-pam/LICENSE.txt
