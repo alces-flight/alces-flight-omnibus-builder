@@ -1,3 +1,19 @@
 #%PAM-1.0
+
+# module to map Unix usernames to Flight usernames.  This module does not
+# alter the username in the pam stack.
+#
+# Supported arguments:
+#
+# `debug`: log debugging information.
 auth optional /opt/flight/usr/lib/security/pam_flight_user_map.so mapfile=/opt/flight/etc/security/flight_user_map.conf
+
+# module to authenticate against the Flight SSO server at `url`.
+#
+# Supported arguments:
+#
+# `url`: the URL of the Flight SSO server.  Mandatory.
+# `minuid`: if a user's uid is less than `minuid`, they will be denied access.  Optional. Default `1000`.
+# `permit_non_mapped_users`: if a user is not in the `mapfile` used by pam_flight_user_map.so, they will be denied access.  Optional. Default `true`.
+# `debug`: log debugging information.
 auth sufficient /opt/flight/usr/lib/security/pam_flight.so url=https://accounts.alces-flight.com/sign-in
