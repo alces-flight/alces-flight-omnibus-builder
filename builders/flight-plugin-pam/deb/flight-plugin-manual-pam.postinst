@@ -1,0 +1,6 @@
+cat <<-EOF
+In order for Flight PAM to work when SELinux is enabled the following policies
+must be set:
+
+setsebool -P authlogin_yubikey 1
+EOF

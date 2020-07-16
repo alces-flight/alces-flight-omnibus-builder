@@ -38,10 +38,13 @@ build() {
         -e "s/%REL%/$REL/g" \
         $d/deb/$NAME.control.tpl > \
         $HOME/${NAME}/${NAME}_${VERSION}-$REL/DEBIAN/control
+    cp $d/deb/$NAME.postinst \
+       $HOME/${NAME}/${NAME}_${VERSION}-$REL/DEBIAN/postinst
+    chmod 755 $HOME/${NAME}/${NAME}_${VERSION}-$REL/DEBIAN/postinst
 
     pushd ${NAME}_${VERSION}-$REL
 
-    wget https://raw.githubusercontent.com/alces-flight/alces-flight-omnibus-builder/flight-pam/builders/flight-pam/dist/etc/pam.d/flight
+    wget https://raw.githubusercontent.com/alces-flight/alces-flight-omnibus-builder/flight-pam/builders/flight-plugin-pam/dist/etc/plugin/pam.d/flight
 
     case $TYPE in
       system)
@@ -50,9 +53,9 @@ build() {
         ;;
 
       manual)
-        mkdir -p opt/flight/etc/pam.d
-        mv flight opt/flight/etc/pam.d/
-        chmod 644 opt/flight/etc/pam.d/flight
+        mkdir -p opt/flight/etc/plugin/pam.d
+        mv flight opt/flight/etc/plugin/pam.d/
+        chmod 644 opt/flight/etc/plugin/pam.d/flight
 
         ;;
       *)
