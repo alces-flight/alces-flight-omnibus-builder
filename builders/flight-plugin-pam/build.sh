@@ -1,7 +1,7 @@
 #!/bin/bash
 PLUGIN=pam
 # The RPM package version
-VERSION=0.1.5
+VERSION=1.0.0
 REL=1
 # The tag in the repo to build.
 TAG=${VERSION}
@@ -44,7 +44,7 @@ build() {
 
     pushd ${NAME}_${VERSION}-$REL
 
-    wget https://raw.githubusercontent.com/alces-flight/alces-flight-omnibus-builder/flight-pam/builders/flight-plugin-pam/dist/etc/plugin/pam.d/flight
+    wget https://raw.githubusercontent.com/alces-flight/alces-flight-omnibus-builder/master/builders/flight-plugin-pam/dist/etc/plugin/pam.d/flight
 
     case $TYPE in
       system)

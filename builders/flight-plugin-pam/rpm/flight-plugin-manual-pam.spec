@@ -8,7 +8,7 @@ License:        EPL-2.0
 URL:            https://github.com/alces-flight/%{_flight_repo_name}
 %undefine _disable_source_fetch
 Source0:        https://github.com/alces-flight/%{_flight_repo_name}/archive/%{_flight_repo_tag}.tar.gz
-Source1:        https://raw.githubusercontent.com/alces-flight/alces-flight-omnibus-builder/flight-pam/builders/flight-plugin-pam/dist/etc/plugin/pam.d/flight
+Source1:        https://raw.githubusercontent.com/alces-flight/alces-flight-omnibus-builder/master/builders/flight-plugin-pam/dist/etc/plugin/pam.d/flight
 BuildRoot:      %{_tmppath}/%{_flight_repo_name}-%{_flight_repo_tag}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      x86_64
 BuildRequires:  libcurl-devel pam-devel
@@ -59,5 +59,5 @@ setsebool -P authlogin_yubikey 1
 EOF
 
 %changelog
-* Wed Jul 08 2020 Ben Armston <ben.armston@alces-flight.com> - 0.1.0-1
+* Thu Jul 16 2020 Ben Armston <ben.armston@alces-flight.com> - 1.0.0-1
 - Initial Package
