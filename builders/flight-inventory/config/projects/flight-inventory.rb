@@ -31,11 +31,11 @@ friendly_name 'Flight Inventory'
 
 install_dir '/opt/flight/opt/inventory'
 
-VERSION = '2.0.0.rc1'
+VERSION = '2.0.0-rc3'
 override 'flight-inventory', version: VERSION
 
 build_version VERSION
-build_iteration 0
+build_iteration 1
 
 dependency 'preparation'
 dependency 'flight-inventory'
@@ -44,7 +44,7 @@ dependency 'version-manifest'
 license 'EPL-2.0'
 license_file 'LICENSE.txt'
 
-description 'Manage interactive GUI inventory sessions'
+description 'Manage asset inventory data'
 
 exclude '**/.git'
 exclude '**/.gitkeep'
