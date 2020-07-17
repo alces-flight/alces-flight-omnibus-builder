@@ -43,7 +43,7 @@ dependency 'version-manifest'
 license 'EPL-2.0'
 license_file 'LICENSE.txt'
 
-description 'Manage interactive GUI desktop sessions'
+description 'Orchestrate the gathering and exporting inventory data'
 
 exclude '**/.git'
 exclude '**/.gitkeep'
