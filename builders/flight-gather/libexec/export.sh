@@ -88,7 +88,9 @@ pushd $local_dir >/dev/null 2>&1
 for asset in "$@"; do
   info=$(flight inventory show $asset 2>/dev/null)
   if [ $? -eq 0 ]; then
-    echo $info > ./$asset
+    cat <<INFO > ./$asset
+$info
+INFO
   else
     echo "Failed to render: $asset"
     exit_code=1
