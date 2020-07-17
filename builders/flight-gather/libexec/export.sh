@@ -31,7 +31,7 @@ if [ $? -ne 0 ]; then
   cat <<ERROR
 Failed to run 'flight asset'
 Please ensure it has been configured for the root user and try again:
-sudo $flight_ROOT/bin/flexec flight asset configure
+sudo $flight_ROOT/bin/flight asset configure
 ERROR
   exit 1
 fi
