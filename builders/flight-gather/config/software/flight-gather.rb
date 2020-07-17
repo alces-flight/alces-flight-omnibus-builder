@@ -38,11 +38,15 @@ skip_transitive_dependency_licensing true
 
 build do
   # Copy the downloaded gather binary into bin
+  src = File.join(project_dir, 'gather-data-bundled.sh')
   dst = File.join(install_dir, 'libexec/gatherer.sh')
-  copy File.join(project_dir, 'gather-data-bundled.sh'), dst
+  block do
+    FileUtils.mkdir_p File.dirname(dst)
+    FileUtils.cp src, dst
+  end
 
   # Copy the associated files into /o/f/o/gather/libexec
-  Dir.glob(File.expand_path('../../libexec', __dir__)).each do |path|
+  Dir.glob(File.expand_path('../../libexec/*', __dir__)).each do |path|
     copy path, File.join(install_dir, 'libexec')
   end
 end
