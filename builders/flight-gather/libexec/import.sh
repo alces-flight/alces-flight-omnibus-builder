@@ -61,6 +61,13 @@ while (( "$#" )); do
 done
 eval set -- "$PARAMS"
 
+# Error if no assets have been provided
+if [ $# -eq 0 ]; then
+  echo 'Please provide at least one asset!' >&2
+  usage
+  exit 1
+fi
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Moves to a local temporary directory

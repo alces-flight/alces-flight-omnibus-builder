@@ -61,6 +61,13 @@ while (( "$#" )); do
 done
 eval set -- "$PARAMS"
 
+# Error if no assets have been provided
+if [ $# -eq 0 ]; then
+  echo 'Please provide at least one asset!' >&2
+  usage
+  exit 1
+fi
+
 # Ensures flight-asset has been configured
 flight asset list 2>/dev/null >&2
 if [ $? -ne 0 ]; then

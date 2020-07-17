@@ -30,35 +30,21 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 usage() {
     local prog
     prog="flight gather"
-    echo "Usage: ${prog} import [--verbose] ASSET_NAME..."
+    echo "Usage: ${prog} import ..."
     echo "  or:  ${prog} export ASSET_NAME..."
     echo "Import inventory data from the cluster and export to Flight Center"
-}
-
-runner() {
-  # Extracts the scripts path
-  script="$1"
-  shift
-
-  # Ensures an asset has been provided
-  if [ $# -eq 0 ]; then
-    usage
-    exit 1
-  else
-    bash $script "$@"
-  fi
 }
 
 main() {
     case "$1" in
         import)
             shift
-            runner "$DIR/import.sh" "$@"
+            bash "$DIR/import.sh" "$@"
             ;;
 
         export)
             shift
-            runner "$DIR/export.sh" "$@"
+            bash "$DIR/export.sh" "$@"
             ;;
 
         --help | help)
