@@ -29,7 +29,7 @@ set -e
 
 # Variable Definition
 asset=$1
-BINARY="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/bin/gatherer.sh"
+BINARY="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/libexec/gatherer.sh"
 bin=/tmp/generate.sh
 zip=/tmp/$asset.zip
 
