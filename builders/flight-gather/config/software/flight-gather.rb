@@ -25,7 +25,7 @@
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
 
-name 'flight-asset-cli'
+name 'flight-gather'
 default_version '2020.1'
 
 version('2020.1') { source sha256: 'b28124b85b99ce82d853631d4f7955dbb1dfbc8c0da1c21cc9aa160a4c791c36' }
