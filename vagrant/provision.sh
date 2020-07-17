@@ -38,6 +38,9 @@ yum install -y -e0 createrepo awscli pam-devel
 
 hostname alces-flight-builder
 
+# Install bundler 2.1.4 for openflight-repo
+gem install bundler:2.1.4
+
 cd /opt
 git clone https://github.com/openflighthpc/openflight-repo
 cd openflight-repo
