@@ -34,7 +34,7 @@ install_dir '/opt/flight/opt/gather'
 VERSION = '0.1.4'
 
 build_version VERSION
-build_iteration 1
+build_iteration 2
 
 dependency 'preparation'
 dependency 'flight-gather'
@@ -51,7 +51,10 @@ exclude '**/bundler/git'
 
 if ohai['platform_family'] == 'rhel'
   runtime_dependency 'flight-asset >= 1.0.0, flight-asset < 2.0.0'
-  runtime_dependency 'flight-inventory >= 2.0.0, flight-inventory < 3.0.0'
+  # HACK: README BEFORE RELEASING 1.0.0
+  # The dependency on `flight-inventory 2.0.0~` allow rcX releases of inventory
+  # The ~ should be removed before a production release is made
+  runtime_dependency 'flight-inventory >= 2.0.0~, flight-inventory < 3.0.0'
   runtime_dependency 'flight-runway >= 1.1.4'
 elsif ohai['platform_family'] == 'debian'
   runtime_dependency 'flight-asset (>= 1.0.0), flight-asset (< 2.0.0)'
