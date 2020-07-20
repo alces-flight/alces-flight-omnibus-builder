@@ -70,12 +70,17 @@ fi
 
 # Ensures flight-asset has been configured
 flight asset list 2>/dev/null >&2
-if [ $? -ne 0 ]; then
+valid="$?"
+if [ "$valid" -ne 0 ]; then
   cat <<ERROR
 Failed to run 'flight asset'
 Please ensure it has been configured for the root user and try again:
 sudo $flight_ROOT/bin/flight asset configure
 ERROR
+fi
+if [ "$valid" -ne 0 ] && [ "$DRY_RUN" ]; then
+  echo 'Continuing dry run...' >&2
+elif [ "$valid" -ne 0 ]; then
   exit 1
 fi
 

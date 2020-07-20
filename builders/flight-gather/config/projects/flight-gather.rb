@@ -34,7 +34,7 @@ install_dir '/opt/flight/opt/gather'
 VERSION = '0.1.5'
 
 build_version VERSION
-build_iteration 2
+build_iteration 1
 
 dependency 'preparation'
 dependency 'flight-gather'
