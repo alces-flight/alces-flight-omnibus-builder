@@ -1,7 +1,7 @@
 : '
 : NAME: inventory
 : SYNOPSIS: Manage asset inventory data
-: VERSION: 2.0.0-rc3
+: VERSION: 2.0.0-rc4
 : ROOT: true
 : '
 #==============================================================================
