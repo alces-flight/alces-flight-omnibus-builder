@@ -91,7 +91,7 @@ pushd $local_dir >/dev/null 2>&1
 
 # Render the assets
 for asset in "$@"; do
-  info=$(flight inventory show $asset 2>/dev/null)
+  info=$(flight inventory show --format flightcenter "$asset"  2>/dev/null)
   if [ $? -eq 0 ]; then
     echo "$info" > ./"$asset"
   else
@@ -114,14 +114,14 @@ else
     asset=$(basename $path)
 
     # Attempts an update
-    flight asset update $asset --info @$path 2>/dev/null >&2
+    flight asset update "$asset" --info @$path 2>/dev/null >&2
     case $? in
     0)
       echo "Exported (update): $asset"
       ;;
     21)
       # Attempts a create
-      flight asset create $asset --info @$path 2>/dev/null >&2
+      flight asset create "$asset" --info @$path 2>/dev/null >&2
       if [ $? -eq 0 ]; then
         echo "Exported (create): $asset"
       else
