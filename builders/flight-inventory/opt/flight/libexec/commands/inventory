@@ -31,6 +31,10 @@
 # https://github.com/openflighthpc/openflight-omnibus-builder
 #===============================================================================
 
+if [ "$UID" != 0 ]; then
+  exec sudo "${flight_ROOT}"/bin/flight "$(basename "$0")" "$@"
+fi
+
 export RUBYOPT='-W0'
 export FLIGHT_CWD=$(pwd)
 cd /opt/flight/opt/inventory
