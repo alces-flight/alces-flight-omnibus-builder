@@ -53,4 +53,9 @@ build do
     '--path vendor'
   ].join(' ')
   command "cd #{install_dir} && /opt/flight/bin/bundle install #{flags}", env: env
+
+  # Generates the config symlink into the root directory
+  block do
+    FileUtils.ln_s '/opt/flight/etc/share/fact.yaml', File.join(install_dir, 'etc/config.yaml')
+  end
 end

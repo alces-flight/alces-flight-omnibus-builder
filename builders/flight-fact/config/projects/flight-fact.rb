@@ -35,7 +35,7 @@ VERSION = '0.1.1'
 override 'flight-fact', version: VERSION
 
 build_version VERSION
-build_iteration 0
+build_iteration 1
 
 dependency 'preparation'
 dependency 'flight-fact'

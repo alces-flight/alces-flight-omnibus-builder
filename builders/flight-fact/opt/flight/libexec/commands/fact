@@ -1,7 +1,7 @@
 : '
 : NAME: fact
 : SYNOPSIS: Manage Alces Flight Center metadata entries
-: VERSION: 0.1.0
+: VERSION: 0.1.1
 : '
 #==============================================================================
 # Copyright (C) 2019-present Alces Flight Ltd.
