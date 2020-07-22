@@ -31,7 +31,7 @@ friendly_name 'Flight Fact'
 
 install_dir '/opt/flight/opt/fact'
 
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 override 'flight-fact', version: VERSION
 
 build_version VERSION
@@ -44,7 +44,7 @@ dependency 'version-manifest'
 license 'EPL-2.0'
 license_file 'LICENSE.txt'
 
-description 'Manage Flight Center asset records'
+description 'Manage Flight Center metadata entries'
 
 exclude '**/.git'
 exclude '**/.gitkeep'

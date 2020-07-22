@@ -42,17 +42,9 @@ build do
   # Moves the project into place
   # We don't copy bin/ as we write our own production bin/asset in the project.
   [
-    'Gemfile', 'Gemfile.lock', 'etc', 'lib', 'LICENSE.txt', 'README.md'
+    'Gemfile', 'Gemfile.lock', 'bin', 'etc', 'lib', 'LICENSE.txt', 'README.md'
   ].each do |file|
     copy file, File.expand_path("#{install_dir}/#{file}/..")
-  end
-
-  block do
-    FileUtils.mkdir_p "#{install_dir}/bin"
-    Dir.glob(File.join(File.dirname(__FILE__), '..', '..', 'dist', 'bin', '*')).each do |path|
-      FileUtils.cp_r path, "#{install_dir}/bin"
-      FileUtils.chmod(0755, File.join("#{install_dir}/bin", File.basename(path)))
-    end
   end
 
   # Installs the gems to the shared `vendor/share`
