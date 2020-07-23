@@ -8,3 +8,4 @@ files/**/cache/
 vendor
 vendor
 local
+libexec/gatherer.sh

@@ -36,6 +36,10 @@ Export inventory data to Flight Center
 USAGE
 }
 
+# Define the path to the flight bin file
+echo ${flight_ROOT:?Has not been set!} >/dev/null
+FLIGHT="$flight_ROOT/bin/flight"
+
 # Parse the help and dry-run flags
 PARAMS=""
 DRY_RUN=""
@@ -69,7 +73,7 @@ if [ $# -eq 0 ]; then
 fi
 
 # Ensures flight-asset has been configured
-flight asset list 2>/dev/null >&2
+"$FLIGHT" asset list 2>/dev/null >&2
 valid="$?"
 if [ "$valid" -ne 0 ]; then
   cat <<ERROR
@@ -91,7 +95,7 @@ pushd $local_dir >/dev/null 2>&1
 
 # Render the assets
 for asset in "$@"; do
-  info=$(flight inventory show --format flightcenter "$asset"  2>/dev/null)
+  info=$("$FLIGHT" inventory show --format flightcenter "$asset"  2>/dev/null)
   if [ $? -eq 0 ]; then
     echo "$info" > ./"$asset"
   else
@@ -114,14 +118,14 @@ else
     asset=$(basename $path)
 
     # Attempts an update
-    flight asset update "$asset" --info @$path 2>/dev/null >&2
+    "$FLIGHT" asset update "$asset" --info @$path 2>/dev/null >&2
     case $? in
     0)
       echo "Exported (update): $asset"
       ;;
     21)
       # Attempts a create
-      flight asset create "$asset" --info @$path 2>/dev/null >&2
+      "$FLIGHT" asset create "$asset" --info @$path 2>/dev/null >&2
       if [ $? -eq 0 ]; then
         echo "Exported (create): $asset"
       else
@@ -142,7 +146,7 @@ else
 
   # Determines assets with missing groups
   sorted_assets=$(echo "$@" | xargs -n 1 | sort)
-  sorted_missing=$(flight asset list-assets --group '' | cut -f1 | xargs -n1 | sort)
+  sorted_missing=$("$FLIGHT" asset list-assets --group '' | cut -f1 | xargs -n1 | sort)
   missing=$(comm -12 <(echo $sorted_assets | xargs -n1) <(echo $sorted_missing | xargs -n1))
 
   if [ -n "$missing" ]; then
@@ -152,7 +156,7 @@ The following assets have not been assigned to a group:
 $(echo $missing | xargs)
 
 You may add them to a group with:
-$flight_ROOT/bin/flight asset move ASSET GROUP
+$FLIGHT asset move ASSET GROUP
 HERE
   fi
 fi
