@@ -129,7 +129,7 @@ else
       "$FLIGHT" asset create "$asset" '' --info @$path 2>/dev/null >&2
       if [ $? -eq 0 ]; then
         echo "Exported: $asset"
-        created=("$asset")
+        created+=("$asset")
       else
         echo "Failed to export: $asset"
         exit_code=1
@@ -152,7 +152,19 @@ else
   list_output=$("$FLIGHT" asset list-assets --group '')
 
   # Notifies the user about created assets
-  echo "$created"
+  if [ "${#created[@]}" -ne 0 ]; then
+    echo >&2
+    echo The following nodes have been created: >&2
+    echo $'Asset\tSupport Type' >&2
+    for asset in "${created[@]}"; do
+      echo "$list_output" | grep "^$asset"$'\t' | cut -f1,2 >&2
+    done
+    cat <<UPDATE_COMMAND
+
+You may update the support type with:
+$FLIGHT asset update-asset ASSET --support-type TYPE
+UPDATE_COMMAND
+  fi
 
   # Determines assets with missing groups
   sorted_assets=$(echo "$@" | xargs -n 1 | sort)
@@ -160,14 +172,14 @@ else
   missing=$(comm -12 <(echo $sorted_assets | xargs -n1) <(echo $sorted_missing | xargs -n1))
 
   if [ -n "$missing" ]; then
-    cat <<HERE >&2
+    cat <<MOVE_COMMAND >&2
 
 The following assets have not been assigned to a group:
 $(echo $missing | xargs)
 
 You may add them to a group with:
-$FLIGHT asset move ASSET GROUP
-HERE
+$FLIGHT asset move-asset ASSET GROUP
+MOVE_COMMAND
   fi
 fi
 
