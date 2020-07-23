@@ -114,6 +114,7 @@ INFO
 
 # Uploads the asset info
 else
+  created=()
   for path in *; do
     asset=$(basename $path)
 
@@ -121,13 +122,14 @@ else
     "$FLIGHT" asset update "$asset" --info @$path 2>/dev/null >&2
     case $? in
     0)
-      echo "Exported (update): $asset"
+      echo "Exported: $asset"
       ;;
     21)
       # Attempts a create
       "$FLIGHT" asset create "$asset" --info @$path 2>/dev/null >&2
       if [ $? -eq 0 ]; then
-        echo "Exported (create): $asset"
+        echo "Exported: $asset"
+        created=("$asset")
       else
         echo "Failed to export: $asset"
         exit_code=1
@@ -143,6 +145,9 @@ else
   # Remove the temporary directory
   popd >/dev/null 2>&1
   rm -rf $local_dir
+
+  # Notifies the user about created assets
+  echo "$created"
 
   # Determines assets with missing groups
   sorted_assets=$(echo "$@" | xargs -n 1 | sort)
