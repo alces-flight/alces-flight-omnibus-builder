@@ -26,10 +26,14 @@
 #===============================================================================
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+VERSION='0.1.7'
 
 usage() {
     local prog
     prog="flight gather"
+
+    "${flight_ROOT}"/bin/flexec ruby "${flight_ROOT}"/opt/runway/bin/banner title='flight gather' version="$VERSION"
+
     echo "Usage: ${prog} import ASSET_NAME..."
     echo "  or:  ${prog} export ASSET_NAME..."
     echo "Import inventory data from the cluster and export to Flight Center"

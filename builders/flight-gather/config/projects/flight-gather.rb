@@ -64,11 +64,16 @@ else
   raise "Unrecognised platform: #{ohai['platform_family']}"
 end
 
-# Updates the version in the libexec file
+# Updates the version in the libexec files
 cmd_path = File.expand_path('../../opt/flight/libexec/commands/gather', __dir__)
 cmd = File.read(cmd_path)
           .sub(/^: VERSION: [[:graph:]]+$/, ": VERSION: #{VERSION}")
 File.write cmd_path, cmd
+File.expand_path('../../libexec/main.sh', __dir__).tap do |path|
+  content = File.read path
+  content.sub!(/VERSION=.*/, "VERSION='#{VERSION}'")
+  File.write path, content
+end
 
 # Includes the static files
 require 'find'
