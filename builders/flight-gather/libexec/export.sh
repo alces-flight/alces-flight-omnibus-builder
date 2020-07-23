@@ -126,7 +126,7 @@ else
       ;;
     21)
       # Attempts a create
-      "$FLIGHT" asset create "$asset" --info @$path 2>/dev/null >&2
+      "$FLIGHT" asset create "$asset" '' --info @$path 2>/dev/null >&2
       if [ $? -eq 0 ]; then
         echo "Exported: $asset"
         created=("$asset")
@@ -146,12 +146,17 @@ else
   popd >/dev/null 2>&1
   rm -rf $local_dir
 
+  # Gets the info about all the missing nodes
+  # NOTE: All created nodes are explicitly made without a group, so appear here
+  #       The following code will break if the above assumption does not hold
+  list_output=$("$FLIGHT" asset list-assets --group '')
+
   # Notifies the user about created assets
   echo "$created"
 
   # Determines assets with missing groups
   sorted_assets=$(echo "$@" | xargs -n 1 | sort)
-  sorted_missing=$("$FLIGHT" asset list-assets --group '' | cut -f1 | xargs -n1 | sort)
+  sorted_missing=$(echo "$list_output" | cut -f1 | xargs -n1 | sort)
   missing=$(comm -12 <(echo $sorted_assets | xargs -n1) <(echo $sorted_missing | xargs -n1))
 
   if [ -n "$missing" ]; then
