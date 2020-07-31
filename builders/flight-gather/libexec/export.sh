@@ -25,14 +25,66 @@
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
 
+usage() {
+    local prog
+    prog="flight gather export"
+    cat <<USAGE
+Usage: ${prog} [--help] [--dry-run] ASSET_NAME...
+Export inventory data to Flight Center
+  --help    Display this help text
+  --dry-run Output the asset sheets to a directory, instead of Flight Center
+USAGE
+}
+
+# Define the path to the flight bin file
+echo ${flight_ROOT:?Has not been set!} >/dev/null
+FLIGHT="$flight_ROOT/bin/flight"
+
+# Parse the help and dry-run flags
+PARAMS=""
+DRY_RUN=""
+while (( "$#" )); do
+  case "$1" in
+    -h|--help)
+      usage
+      exit
+      ;;
+    --dry-run)
+      DRY_RUN="true"
+      shift
+      ;;
+    -*|--*=) # unsupported flags
+      echo "Error: Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+eval set -- "$PARAMS"
+
+# Error if no assets have been provided
+if [ $# -eq 0 ]; then
+  echo 'Please provide at least one asset!' >&2
+  usage
+  exit 1
+fi
+
 # Ensures flight-asset has been configured
-flight asset list 2>/dev/null >&2
-if [ $? -ne 0 ]; then
+"$FLIGHT" asset list 2>/dev/null >&2
+valid="$?"
+if [ "$valid" -ne 0 ]; then
   cat <<ERROR
 Failed to run 'flight asset'
 Please ensure it has been configured for the root user and try again:
-sudo $flight_ROOT/bin/flexec flight asset configure
+sudo $flight_ROOT/bin/flight asset configure
 ERROR
+fi
+if [ "$valid" -ne 0 ] && [ "$DRY_RUN" ]; then
+  echo 'Continuing dry run...' >&2
+elif [ "$valid" -ne 0 ]; then
   exit 1
 fi
 
@@ -43,60 +95,92 @@ pushd $local_dir >/dev/null 2>&1
 
 # Render the assets
 for asset in "$@"; do
-  info=$(flight inventory show $asset 2>/dev/null)
+  info=$("$FLIGHT" inventory show --format flightcenter "$asset"  2>/dev/null)
   if [ $? -eq 0 ]; then
-    echo $info > ./$asset
+    echo "$info" > ./"$asset"
   else
-    echo "Failed to render: $asset"
+    echo Failed to render: "$asset"
     exit_code=1
   fi
 done
 
-# Uploads the info
-for path in *; do
-  asset=$(basename $path)
 
-  # Attempts an update
-  flight asset update $asset --info @$path 2>/dev/null >&2
-  case $? in
-  0)
-    echo "Exported (update): $asset"
-    ;;
-  21)
-    # Attempts a create
-    flight asset create $asset --info @$path 2>/dev/null >&2
-    if [ $? -eq 0 ]; then
-      echo "Exported (create): $asset"
-    else
+# For "Dry Runs" output the directory where the render files are stored
+if [ "$DRY_RUN" ]; then
+  cat <<INFO
+The rendered asset sheets can be found in:
+$(pwd)
+INFO
+
+# Uploads the asset info
+else
+  created=()
+  for path in *; do
+    asset=$(basename $path)
+
+    # Attempts an update
+    "$FLIGHT" asset update "$asset" --info @$path 2>/dev/null >&2
+    case $? in
+    0)
+      echo "Exported: $asset"
+      ;;
+    21)
+      # Attempts a create
+      "$FLIGHT" asset create "$asset" '' --info @$path 2>/dev/null >&2
+      if [ $? -eq 0 ]; then
+        echo "Exported: $asset"
+        created+=("$asset")
+      else
+        echo "Failed to export: $asset"
+        exit_code=1
+      fi
+      ;;
+    *)
       echo "Failed to export: $asset"
       exit_code=1
-    fi
-    ;;
-  *)
-    echo "Failed to export: $asset"
-    exit_code=1
-    ;;
-  esac
-done
+      ;;
+    esac
+  done
 
-# Remove the temporary directory
-popd >/dev/null 2>&1
-rm -rf $local_dir
+  # Remove the temporary directory
+  popd >/dev/null 2>&1
+  rm -rf $local_dir
 
-# Determines assets with missing groups
-sorted_assets=$(echo "$@" | xargs -n 1 | sort)
-sorted_missing=$(flight asset list-assets --group '' | cut -f1 | xargs -n1 | sort)
-missing=$(comm -12 <(echo $sorted_assets | xargs -n1) <(echo $sorted_missing | xargs -n1))
+  # Gets the info about all the missing nodes
+  # NOTE: All created nodes are explicitly made without a group, so appear here
+  #       The following code will break if the above assumption does not hold
+  list_output=$("$FLIGHT" asset list-assets --group '')
 
-if [ -n "$missing" ]; then
-  cat <<HERE >&2
+  # Notifies the user about created assets
+  if [ "${#created[@]}" -ne 0 ]; then
+    echo >&2
+    echo The following nodes have been created: >&2
+    echo $'Asset\tSupport Type' >&2
+    for asset in "${created[@]}"; do
+      echo "$list_output" | grep "^$asset"$'\t' | cut -f1,2 >&2
+    done
+    cat <<UPDATE_COMMAND
+
+You may update the support type with:
+$FLIGHT asset update-asset ASSET --support-type TYPE
+UPDATE_COMMAND
+  fi
+
+  # Determines assets with missing groups
+  sorted_assets=$(echo "$@" | xargs -n 1 | sort)
+  sorted_missing=$(echo "$list_output" | cut -f1 | xargs -n1 | sort)
+  missing=$(comm -12 <(echo $sorted_assets | xargs -n1) <(echo $sorted_missing | xargs -n1))
+
+  if [ -n "$missing" ]; then
+    cat <<MOVE_COMMAND >&2
 
 The following assets have not been assigned to a group:
 $(echo $missing | xargs)
 
 You may add them to a group with:
-flight asset move ASSET GROUP
-HERE
+$FLIGHT asset move-asset ASSET GROUP
+MOVE_COMMAND
+  fi
 fi
 
 exit $exit_code

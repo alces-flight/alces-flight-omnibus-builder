@@ -25,15 +25,50 @@
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-VERBOSE=
+usage() {
+    local prog
+    prog="flight gather import"
+    cat <<USAGE
+Usage: ${prog} [--help] [--verbose] ASSET_NAME...
+Profile the assets and import the data into 'flight inventory'
+  --help    Display this help text
+  --verbose Display the full profiler output
+USAGE
+}
 
-case "$1" in
+# Parse the help and verbose flags
+PARAMS=""
+VERBOSE=
+while (( "$#" )); do
+  case "$1" in
+    -h|--help)
+      usage
+      exit
+      ;;
     --verbose)
         VERBOSE=true
         shift
         ;;
-esac
+    -*|--*=) # unsupported flags
+      echo "Error: Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+eval set -- "$PARAMS"
+
+# Error if no assets have been provided
+if [ $# -eq 0 ]; then
+  echo 'Please provide at least one asset!' >&2
+  usage
+  exit 1
+fi
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Moves to a local temporary directory
 local_dir=$(mktemp -d -t 'gather-XXXXXXXX')

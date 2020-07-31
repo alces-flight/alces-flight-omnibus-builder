@@ -26,39 +26,29 @@
 #===============================================================================
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+VERSION='1.0.0'
 
 usage() {
     local prog
     prog="flight gather"
-    echo "Usage: ${prog} import [--verbose] ASSET_NAME..."
+
+    "${flight_ROOT}"/bin/flexec ruby "${flight_ROOT}"/opt/runway/bin/banner title='flight gather' version="$VERSION"
+
+    echo "Usage: ${prog} import ASSET_NAME..."
     echo "  or:  ${prog} export ASSET_NAME..."
     echo "Import inventory data from the cluster and export to Flight Center"
-}
-
-runner() {
-  # Extracts the scripts path
-  script="$1"
-  shift
-
-  # Ensures an asset has been provided
-  if [ $# -eq 0 ]; then
-    usage
-    exit 1
-  else
-    bash $script "$@"
-  fi
 }
 
 main() {
     case "$1" in
         import)
             shift
-            runner "$DIR/import.sh" "$@"
+            bash "$DIR/import.sh" "$@"
             ;;
 
         export)
             shift
-            runner "$DIR/export.sh" "$@"
+            bash "$DIR/export.sh" "$@"
             ;;
 
         --help | help)

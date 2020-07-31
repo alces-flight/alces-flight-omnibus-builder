@@ -1,7 +1,7 @@
 #==============================================================================
 # Copyright (C) 2019-present Alces Flight Ltd.
 #
-# This file is part of Alces Flight Omnibus Builder.
+# This file is part of OpenFlight Omnibus Builder.
 #
 # This program and the accompanying materials are made available under
 # the terms of the Eclipse Public License 2.0 which is available at
@@ -21,33 +21,22 @@
 #
 #  https://opensource.org/licenses/EPL-2.0
 #
-# For more information on Alces Flight Omnibus Builder, please visit:
-# https://github.com/alces-flight/alces-flight-omnibus-builder
+# For more information on OpenFlight Omnibus Builder, please visit:
+# https://github.com/openflighthpc/openflight-omnibus-builder
 #===============================================================================
+name "flight-runway"
+default_version "0.0.0"
 
-set -e
+Dir.mktmpdir do |tmpdir|
+  source path: tmpdir
+end
 
-# Variable Definition
-asset=$1
-BINARY="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/libexec/gatherer.sh"
-bin=/tmp/generate.sh
-zip=/tmp/$asset.zip
-
-# Removes the old binary and zip (if required)
-cleanup() {
-  ssh $asset rm -f $bin $zip
-}
-cleanup
-
-# Move the binary into place
-scp $BINARY $asset:$bin
-
-# Run the binary
-ssh $asset bash $bin
-
-# Copy the results down
-scp $asset:$zip .
-
-# Runs the cleanup
-cleanup
-
+build do
+  raise "Flight Runway is not installed!" if ! File.exists?('/opt/flight/bin/flight')
+  bundle_version = Bundler.with_unbundled_env do
+    `/opt/flight/bin/bundle --version | sed 's/Bundler version //g'`.chomp
+  end
+  if bundle_version != '2.1.4'
+    raise "Flight Runway has incorrect bundle version: #{bundle_version} (expected 2.1.4)"
+  end
+end

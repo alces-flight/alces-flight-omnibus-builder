@@ -1,7 +1,7 @@
 #==============================================================================
 # Copyright (C) 2019-present Alces Flight Ltd.
 #
-# This file is part of Alces Flight Omnibus Builder.
+# This file is part of OpenFlight Omnibus Builder.
 #
 # This program and the accompanying materials are made available under
 # the terms of the Eclipse Public License 2.0 which is available at
@@ -21,33 +21,36 @@
 #
 #  https://opensource.org/licenses/EPL-2.0
 #
-# For more information on Alces Flight Omnibus Builder, please visit:
-# https://github.com/alces-flight/alces-flight-omnibus-builder
+# For more information on OpenFlight Omnibus Builder, please visit:
+# https://github.com/openflighthpc/openflight-omnibus-builder
 #===============================================================================
+name 'flight-inventory'
+default_version '0.0.0'
 
-set -e
+source git: 'https://github.com/openflighthpc/flight-inventory'
 
-# Variable Definition
-asset=$1
-BINARY="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/libexec/gatherer.sh"
-bin=/tmp/generate.sh
-zip=/tmp/$asset.zip
+dependency 'flight-runway'
+whitelist_file Regexp.new("vendor/ruby/.*\.so$")
 
-# Removes the old binary and zip (if required)
-cleanup() {
-  ssh $asset rm -f $bin $zip
-}
-cleanup
+license 'EPL-2.0'
+license_file 'LICENSE.txt'
+skip_transitive_dependency_licensing true
 
-# Move the binary into place
-scp $BINARY $asset:$bin
+build do
+  env = with_standard_compiler_flags(with_embedded_path)
 
-# Run the binary
-ssh $asset bash $bin
+  # Moves the project into place
+  [
+    'Gemfile', 'Gemfile.lock', 'bin', 'etc', 'lib', 'libexec', 'helpers',
+    'LICENSE.txt', 'README.md', 'templates', 'plugins', 'scripts'
+  ].each do |file|
+    copy file, File.expand_path("#{install_dir}/#{file}/..")
+  end
 
-# Copy the results down
-scp $asset:$zip .
-
-# Runs the cleanup
-cleanup
-
+  # Installs the gems to the shared `vendor/share`
+  flags = [
+    "--without development test",
+    '--path vendor'
+  ].join(' ')
+  command "cd #{install_dir} && /opt/flight/bin/bundle install #{flags}", env: env
+end

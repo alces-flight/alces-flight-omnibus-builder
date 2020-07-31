@@ -31,7 +31,7 @@ friendly_name 'Flight Gather'
 
 install_dir '/opt/flight/opt/gather'
 
-VERSION = '0.1.3'
+VERSION = '1.0.0'
 
 build_version VERSION
 build_iteration 1
@@ -43,7 +43,7 @@ dependency 'version-manifest'
 license 'EPL-2.0'
 license_file 'LICENSE.txt'
 
-description 'Manage interactive GUI desktop sessions'
+description 'Orchestrate the gathering and exporting inventory data'
 
 exclude '**/.git'
 exclude '**/.gitkeep'
@@ -51,21 +51,26 @@ exclude '**/bundler/git'
 
 if ohai['platform_family'] == 'rhel'
   runtime_dependency 'flight-asset >= 1.0.0, flight-asset < 2.0.0'
-  runtime_dependency 'flight-inventory >= 2.0.0, flight-inventory < 3.0.0'
+  runtime_dependency 'flight-inventory >= 2.0.0, flight-inventory < 2.1.0'
   runtime_dependency 'flight-runway >= 1.1.4'
 elsif ohai['platform_family'] == 'debian'
   runtime_dependency 'flight-asset (>= 1.0.0), flight-asset (< 2.0.0)'
-  runtime_dependency 'flight-inventory (>= 2.0.0), flight-inventory (< 3.0.0)'
+  runtime_dependency 'flight-inventory (>= 2.0.0), flight-inventory (< 2.1.0)'
   runtime_dependency "flight-runway (>= 1.1.4)"
 else
   raise "Unrecognised platform: #{ohai['platform_family']}"
 end
 
-# Updates the version in the libexec file
+# Updates the version in the libexec files
 cmd_path = File.expand_path('../../opt/flight/libexec/commands/gather', __dir__)
 cmd = File.read(cmd_path)
           .sub(/^: VERSION: [[:graph:]]+$/, ": VERSION: #{VERSION}")
 File.write cmd_path, cmd
+File.expand_path('../../libexec/main.sh', __dir__).tap do |path|
+  content = File.read path
+  content.sub!(/VERSION=.*/, "VERSION='#{VERSION}'")
+  File.write path, content
+end
 
 # Includes the static files
 require 'find'

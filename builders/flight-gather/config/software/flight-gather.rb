@@ -25,7 +25,7 @@
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
 
-name 'flight-asset-cli'
+name 'flight-gather'
 default_version '2020.1'
 
 version('2020.1') { source sha256: 'b28124b85b99ce82d853631d4f7955dbb1dfbc8c0da1c21cc9aa160a4c791c36' }
@@ -38,11 +38,15 @@ skip_transitive_dependency_licensing true
 
 build do
   # Copy the downloaded gather binary into bin
-  dst = File.join(install_dir, 'bin/gatherer.sh')
-  copy File.join(project_dir, 'gather-data-bundled.sh'), dst
+  src = File.join(project_dir, 'gather-data-bundled.sh')
+  dst = File.join(install_dir, 'libexec/gatherer.sh')
+  block do
+    FileUtils.mkdir_p File.dirname(dst)
+    FileUtils.cp src, dst
+  end
 
   # Copy the associated files into /o/f/o/gather/libexec
-  Dir.glob(File.expand_path('../../libexec', __dir__)).each do |path|
+  Dir.glob(File.expand_path('../../libexec/*', __dir__)).each do |path|
     copy path, File.join(install_dir, 'libexec')
   end
 end
