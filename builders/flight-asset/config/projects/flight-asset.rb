@@ -31,7 +31,7 @@ friendly_name 'Flight Asset'
 
 install_dir '/opt/flight/opt/asset'
 
-VERSION = '1.1.2'
+VERSION = '1.1.3'
 override 'flight-asset-cli', version: VERSION
 
 build_version VERSION
