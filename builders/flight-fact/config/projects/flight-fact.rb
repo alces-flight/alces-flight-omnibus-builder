@@ -31,7 +31,7 @@ friendly_name 'Flight Fact'
 
 install_dir '/opt/flight/opt/fact'
 
-VERSION = '0.2.2'
+VERSION = '0.2.3'
 override 'flight-fact', version: VERSION
 
 build_version VERSION
