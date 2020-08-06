@@ -31,7 +31,7 @@ friendly_name 'Flight Fact'
 
 install_dir '/opt/flight/opt/fact'
 
-VERSION = '0.2.3'
+VERSION = '0.3.0'
 override 'flight-fact', version: VERSION
 
 build_version VERSION
@@ -74,6 +74,8 @@ require 'find'
 Find.find('opt') do |o|
   extra_package_file(o) if File.file?(o)
 end
+
+config_file '/opt/flight/etc/share/fact.yaml'
 
 package :rpm do
   vendor 'Alces Flight Ltd'
