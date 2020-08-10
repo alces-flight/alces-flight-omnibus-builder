@@ -31,7 +31,7 @@ friendly_name 'Flight Asset'
 
 install_dir '/opt/flight/opt/asset'
 
-VERSION = '1.1.5'
+VERSION = '1.1.6'
 override 'flight-asset-cli', version: VERSION
 
 build_version VERSION
@@ -58,6 +58,9 @@ cmd_path = File.expand_path('../../opt/flight/libexec/commands/asset', __dir__)
 cmd = File.read(cmd_path)
           .sub(/^: VERSION: [[:graph:]]+$/, ": VERSION: #{VERSION}")
 File.write cmd_path, cmd
+
+# Flags the main config file to the packager
+config_file '/opt/flight/etc/share/asset.yaml'
 
 # Includes the static files
 require 'find'

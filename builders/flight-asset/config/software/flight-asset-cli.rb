@@ -64,4 +64,9 @@ build do
     '--path vendor'
   ].join(' ')
   command "cd #{install_dir} && /opt/flight/bin/bundle install #{flags}", env: env
+
+    # Links the config into the system location
+  block do
+    FileUtils.ln_sf '/opt/flight/etc/share/asset.yaml', File.expand_path('etc/config.yaml', install_dir)
+  end
 end
