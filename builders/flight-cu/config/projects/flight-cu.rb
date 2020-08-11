@@ -35,7 +35,7 @@ VERSION = '0.1.4'
 override 'charge-client', version: VERSION
 
 build_version VERSION
-build_iteration 1
+build_iteration 2
 
 dependency 'preparation'
 dependency 'charge-client'
@@ -44,7 +44,7 @@ dependency 'version-manifest'
 license 'EPL-2.0'
 license_file 'LICENSE.txt'
 
-description 'Manage Flight Center compute unit balance'
+description 'Manage Alces Flight Center compute unit balance'
 
 exclude '**/.git'
 exclude '**/.gitkeep'
