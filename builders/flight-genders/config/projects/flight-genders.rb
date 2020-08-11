@@ -31,7 +31,7 @@ friendly_name 'Flight genders'
 
 install_dir '/opt/flight/opt/genders'
 
-VERSION = '1.0.0'
+VERSION = '1.0.1'
 override 'flight-genders', version: VERSION
 
 build_version VERSION
@@ -44,7 +44,7 @@ dependency 'version-manifest'
 license 'EPL-2.0'
 license_file 'LICENSE.txt'
 
-description 'Generate a genders file from Flight Center asset group data'
+description 'Generate a genders file from Alces Flight Center asset group data'
 
 exclude '**/.git'
 exclude '**/.gitkeep'

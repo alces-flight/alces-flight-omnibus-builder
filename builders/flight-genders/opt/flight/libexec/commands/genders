@@ -1,6 +1,6 @@
 : '
 : NAME: genders
-: SYNOPSIS: Generate a genders file from Flight Center asset group data
+: SYNOPSIS: Generate a genders file from Alces Flight Center asset group data
 : VERSION: 0.1.0
 : '
 #==============================================================================
