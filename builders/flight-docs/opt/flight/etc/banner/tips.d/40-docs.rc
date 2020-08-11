@@ -5,4 +5,4 @@
 ##
 ################################################################################
 flight_TIP_command="flight docs"
-flight_TIP_synopsis="Access your Flight Center documents"
+flight_TIP_synopsis="Access your Alces Flight Center documents"

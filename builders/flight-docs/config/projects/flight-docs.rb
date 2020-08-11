@@ -44,7 +44,7 @@ dependency 'version-manifest'
 license 'EPL-2.0'
 license_file 'LICENSE.txt'
 
-description 'Access your Flight Center documents'
+description 'Access your Alces Flight Center documents'
 
 exclude '**/.git'
 exclude '**/.gitkeep'
