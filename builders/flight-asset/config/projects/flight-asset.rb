@@ -35,7 +35,7 @@ VERSION = '1.1.6'
 override 'flight-asset-cli', version: VERSION
 
 build_version VERSION
-build_iteration 2
+build_iteration 3
 
 dependency 'preparation'
 dependency 'flight-asset-cli'
@@ -44,7 +44,7 @@ dependency 'version-manifest'
 license 'EPL-2.0'
 license_file 'LICENSE.txt'
 
-description 'Manage Flight Center asset records'
+description 'Manage Alces Flight Center asset records'
 
 exclude '**/.git'
 exclude '**/.gitkeep'
