@@ -53,6 +53,12 @@ exclude '**/bundler/git'
 extra_package_file "opt/flight/libexec/commands/genders"
 extra_package_file "opt/flight/opt/genders/bin/main.sh"
 
+# Updates the version in the libexec file
+cmd_path = File.expand_path('../../opt/flight/libexec/commands/genders', __dir__)
+cmd = File.read(cmd_path)
+          .sub(/^: VERSION: [[:graph:]]+$/, ": VERSION: #{VERSION}")
+File.write cmd_path, cmd
+
 if ohai['platform_family'] == 'rhel'
   runtime_dependency "flight-asset >= 0.5.0"
 elsif ohai['platform_family'] == 'debian'
