@@ -31,7 +31,7 @@ friendly_name 'Flight genders'
 
 install_dir '/opt/flight/opt/genders'
 
-VERSION = '1.0.0'
+VERSION = '1.0.1'
 override 'flight-genders', version: VERSION
 
 build_version VERSION
@@ -44,7 +44,7 @@ dependency 'version-manifest'
 license 'EPL-2.0'
 license_file 'LICENSE.txt'
 
-description 'Generate a genders file from Flight Center asset group data'
+description 'Generate a genders file from Alces Flight Center asset group data'
 
 exclude '**/.git'
 exclude '**/.gitkeep'
@@ -52,6 +52,12 @@ exclude '**/bundler/git'
 
 extra_package_file "opt/flight/libexec/commands/genders"
 extra_package_file "opt/flight/opt/genders/bin/main.sh"
+
+# Updates the version in the libexec file
+cmd_path = File.expand_path('../../opt/flight/libexec/commands/genders', __dir__)
+cmd = File.read(cmd_path)
+          .sub(/^: VERSION: [[:graph:]]+$/, ": VERSION: #{VERSION}")
+File.write cmd_path, cmd
 
 if ohai['platform_family'] == 'rhel'
   runtime_dependency "flight-asset >= 0.5.0"

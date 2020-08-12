@@ -97,7 +97,7 @@ USAGE:
 
 DESCRIPTION:
 
-  Generate a genders file from Flight Center asset group data.
+  Generate a genders file from Alces Flight Center asset group data.
 
   If FILE is given the results are written to FILE, otherwise to standard
   output.

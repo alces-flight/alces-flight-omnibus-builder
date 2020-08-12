@@ -26,7 +26,7 @@
 #===============================================================================
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-VERSION='1.0.0'
+VERSION='1.0.1'
 
 usage() {
     local prog
@@ -36,7 +36,7 @@ usage() {
 
     echo "Usage: ${prog} import ASSET_NAME..."
     echo "  or:  ${prog} export ASSET_NAME..."
-    echo "Import inventory data from the cluster and export to Flight Center"
+    echo "Import inventory data from the cluster and export to Alces Flight Center"
 }
 
 main() {

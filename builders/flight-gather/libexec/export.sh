@@ -30,9 +30,9 @@ usage() {
     prog="flight gather export"
     cat <<USAGE
 Usage: ${prog} [--help] [--dry-run] ASSET_NAME...
-Export inventory data to Flight Center
+Export inventory data to Alces Flight Center
   --help    Display this help text
-  --dry-run Output the asset sheets to a directory, instead of Flight Center
+  --dry-run Output the asset sheets to a directory, instead of Alces Flight Center
 USAGE
 }
 
