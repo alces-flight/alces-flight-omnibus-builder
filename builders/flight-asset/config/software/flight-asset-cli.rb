@@ -47,8 +47,8 @@ build do
     copy file, File.expand_path("#{install_dir}/#{file}/..")
   end
 
-  # patch in standard program name handling
-  command %(sed -i -e "s/program :name, .*/program :name, ENV.fetch('FLIGHT_PROGRAM_NAME','asset')/g" #{install_dir}/lib/flight_asset/cli.rb)
+  # Patch name handling into the reference
+  command %(sed -i -e "s/config :app_name.*/config :app_name, default: ENV.fetch('FLIGHT_PROGRAM_NAME','asset')/g" #{install_dir}/etc/config.reference)
 
   block do
     FileUtils.mkdir_p "#{install_dir}/bin"
