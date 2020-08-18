@@ -31,11 +31,11 @@ friendly_name 'Flight Fact'
 
 install_dir '/opt/flight/opt/fact'
 
-VERSION = '0.1.0'
+VERSION = '1.0.0'
 override 'flight-fact', version: VERSION
 
 build_version VERSION
-build_iteration 0
+build_iteration 1
 
 dependency 'preparation'
 dependency 'flight-fact'
@@ -44,7 +44,7 @@ dependency 'version-manifest'
 license 'EPL-2.0'
 license_file 'LICENSE.txt'
 
-description 'Manage Flight Center asset records'
+description 'Manage Alces Flight Center asset metadata entries'
 
 exclude '**/.git'
 exclude '**/.gitkeep'
@@ -74,6 +74,8 @@ require 'find'
 Find.find('opt') do |o|
   extra_package_file(o) if File.file?(o)
 end
+
+config_file '/opt/flight/etc/share/fact.yaml'
 
 package :rpm do
   vendor 'Alces Flight Ltd'
