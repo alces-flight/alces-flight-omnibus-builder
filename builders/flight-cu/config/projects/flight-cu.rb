@@ -31,11 +31,11 @@ friendly_name 'Flight Compute Units'
 
 install_dir '/opt/flight/opt/cu'
 
-VERSION = '0.1.4'
+VERSION = '1.0.0-c1'
 override 'charge-client', version: VERSION
 
 build_version VERSION
-build_iteration 2
+build_iteration 1
 
 dependency 'preparation'
 dependency 'charge-client'
