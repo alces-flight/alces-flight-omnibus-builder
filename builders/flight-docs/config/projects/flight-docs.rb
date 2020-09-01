@@ -31,11 +31,11 @@ friendly_name 'Flight Docs'
 
 install_dir '/opt/flight/opt/docs'
 
-VERSION = '1.0.1'
+VERSION = '1.0.2'
 override 'flight-docs', version: VERSION
 
 build_version VERSION
-build_iteration 2
+build_iteration 1
 
 dependency 'preparation'
 dependency 'flight-docs'
