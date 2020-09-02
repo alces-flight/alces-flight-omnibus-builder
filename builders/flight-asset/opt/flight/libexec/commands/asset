@@ -1,7 +1,7 @@
 : '
 : NAME: asset
 : SYNOPSIS: Manage Alces Flight Center assets
-: VERSION: 2.0.0-rc2
+: VERSION: 2.0.0-rc3
 : '
 #==============================================================================
 # Copyright (C) 2019-present Alces Flight Ltd.
