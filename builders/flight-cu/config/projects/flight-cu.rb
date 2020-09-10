@@ -35,7 +35,7 @@ VERSION = '1.0.0'
 override 'charge-client', version: VERSION
 
 build_version VERSION
-build_iteration 2
+build_iteration 1
 
 dependency 'preparation'
 dependency 'charge-client'
