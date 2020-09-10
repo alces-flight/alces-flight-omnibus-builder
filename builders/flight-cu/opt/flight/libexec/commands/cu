@@ -1,7 +1,7 @@
 : '
 : NAME: cu
 : SYNOPSIS: Manage Alces Flight Center compute unit balance
-: VERSION: 1.0.0-c1
+: VERSION: 1.0.0
 : ROOT: true
 : '
 #==============================================================================
