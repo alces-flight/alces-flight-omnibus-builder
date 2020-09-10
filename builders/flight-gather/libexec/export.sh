@@ -178,7 +178,7 @@ The following assets have not been assigned to a group:
 $(echo $missing | xargs)
 
 You may add them to a group with:
-$FLIGHT asset move-asset ASSET GROUP
+$FLIGHT asset update-asset ASSET --group GROUP
 MOVE_COMMAND
   fi
 fi

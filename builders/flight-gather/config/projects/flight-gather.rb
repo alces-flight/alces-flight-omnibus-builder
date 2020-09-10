@@ -31,7 +31,7 @@ friendly_name 'Flight Gather'
 
 install_dir '/opt/flight/opt/gather'
 
-VERSION = '1.0.1'
+VERSION = '1.0.2'
 
 build_version VERSION
 build_iteration 1
@@ -50,12 +50,12 @@ exclude '**/.gitkeep'
 exclude '**/bundler/git'
 
 if ohai['platform_family'] == 'rhel'
-  runtime_dependency 'flight-asset >= 1.0.0, flight-asset < 2.0.0'
-  runtime_dependency 'flight-inventory >= 2.0.0, flight-inventory < 2.1.0'
+  runtime_dependency 'flight-asset >= 1.0.0, flight-asset < 2.1.0'
+  runtime_dependency 'flight-inventory >= 2.0.0, flight-inventory < 2.2.0'
   runtime_dependency 'flight-runway >= 1.1.4'
 elsif ohai['platform_family'] == 'debian'
-  runtime_dependency 'flight-asset (>= 1.0.0), flight-asset (< 2.0.0)'
-  runtime_dependency 'flight-inventory (>= 2.0.0), flight-inventory (< 2.1.0)'
+  runtime_dependency 'flight-asset (>= 1.0.0), flight-asset (< 2.1.0)'
+  runtime_dependency 'flight-inventory (>= 2.0.0), flight-inventory (< 2.2.0)'
   runtime_dependency "flight-runway (>= 1.1.4)"
 else
   raise "Unrecognised platform: #{ohai['platform_family']}"
