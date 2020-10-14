@@ -60,7 +60,15 @@ cmd = File.read(cmd_path)
           .sub(/^: VERSION: [[:graph:]]+$/, ": VERSION: #{VERSION}")
 File.write cmd_path, cmd
 
-# Includes the static files
+# Copies the correct howto version into place
+howto_src = File.expand_path("../../contrib/howto/#{VERSION.sub(/\.\d+(-\w.*)?\Z/, '')}", __dir__)
+howto_dst = File.expand_path("../../opt/flight/usr/share/howto/flight-docs.md", __dir__)
+raise "Could not locate: #{howto_src}" unless File.exists? howto_src
+FileUtils.mkdir_p File.dirname(howto_dst)
+FileUtils.rm_f howto_dst
+FileUtils.cp howto_src, howto_dst
+
+# Includes the static files after updating the opt directory
 require 'find'
 Find.find('opt') do |o|
   extra_package_file(o) if File.file?(o)
@@ -68,8 +76,15 @@ end
 
 package :rpm do
   vendor 'Alces Flight Ltd'
+  # repurposed 'priority' field to set RPM recommends/provides
+  # provides are prefixed with `:`
+  priority "flight-howto-system-1.0"
 end
 
 package :deb do
+  # repurposed 'section' field to set DEB recommends/provides
+  # entire section is prefixed with `:` to trigger handling
+  # provides are further prefixed with `:`
   vendor 'Alces Flight Ltd'
+  section ":flight-howto-system-1.0"
 end
