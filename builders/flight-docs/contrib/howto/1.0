@@ -49,12 +49,12 @@ The available documents associated with your account can be view with the
 
 ~~~
 $ flight docs list
-┌─────────────────────┬────────────┬───────────┬──────────┐
-│ Name                │ Quick code │ Locations │ Type     │
-├─────────────────────┼────────────┼───────────┼──────────┤
-│ Demo howto document │ jdscks     │ Global    │ Markdown │
++---------------------+------------+-----------+----------+
+| Name                | Quick code | Locations | Type     |
++---------------------+------------+-----------+----------+
+| Demo howto document | jdscks     | Global    | Markdown |
 ...
-└─────────────────────┴────────────┴───────────┴──────────┘
++---------------------+------------+-----------+----------+
 ~~~
 
 ## View a Document
