@@ -43,6 +43,7 @@ build do
   block do
     FileUtils.mkdir_p File.dirname(dst)
     FileUtils.cp src, dst
+    FileUtils.chmod 0664, dst
   end
 
   # Copy the associated files into /o/f/o/gather/libexec
