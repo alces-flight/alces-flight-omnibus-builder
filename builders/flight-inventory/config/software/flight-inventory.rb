@@ -64,6 +64,12 @@ build do
 #{COPYRIGHT_HEADER}
 
 #===============================================================================
+# Do Not Edit!
+# Any changes to this file will be lost on the next update. Please put
+# installation specfic configs into: "etc/ZZ-overrides.conf"
+#===============================================================================
+
+#===============================================================================
 # Define the application as part of the flight ecosystem
 #===============================================================================
 @program_name     = ENV.fetch('FLIGHT_PROGRAM_NAME', 'flight inventory')

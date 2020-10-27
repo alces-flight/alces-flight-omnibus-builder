@@ -59,7 +59,11 @@ original = File.read(path)
 updated = original.sub(/^: VERSION: [[:graph:]]+$/, ": VERSION: #{VERSION}")
 File.write(path, updated) unless original == updated
 
-extra_package_file 'opt/flight/libexec/commands/inventory'
+Dir.glob('opt/**/*')
+   .select { |p| File.file? p }
+   .each { |p| extra_package_file p }
+
+config_file '/opt/flight/opt/inventory/etc/ZZ-overrides.conf'
 
 package :rpm do
   vendor 'Alces Flight Ltd'
