@@ -35,7 +35,7 @@ zip=/tmp/$asset.zip
 
 # Removes the old binary and zip (if required)
 cleanup() {
-  ssh $asset rm -f $bin $zip
+  ssh $asset sudo rm -f $bin $zip
 }
 cleanup
 
@@ -43,7 +43,7 @@ cleanup
 scp $BINARY $asset:$bin
 
 # Run the binary
-ssh $asset bash $bin
+ssh $asset sudo bash $bin
 
 # Copy the results down
 scp $asset:$zip .
