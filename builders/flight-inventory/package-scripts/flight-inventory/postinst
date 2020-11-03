@@ -35,8 +35,8 @@ Flight Inventory - XDG Config Update
 Flight Inventory has been updated to store the configs using XDG. Please run
 the following to migrate the existing data into a user's XDG path.
 
-$ mkdir -p "${XDG_CACHE_HOME:-~/.cache}/flight/inventory"
-$ mv /opt/flight/opt/inventory/var/store/default/* "${XDG_CACHE_HOME:-~/.cache}/flight/inventory/"
+$ mkdir -p ${XDG_CACHE_HOME:-~/.cache}/flight/inventory
+$ mv /opt/flight/opt/inventory/var/store/default/* ${XDG_CACHE_HOME:-~/.cache}/flight/inventory/
 $ rmdir /opt/flight/opt/inventory/var/store/default
 EOF
 fi
