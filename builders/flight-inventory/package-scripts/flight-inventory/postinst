@@ -27,61 +27,16 @@
 #===============================================================================
 
 if [ -d "/opt/flight/opt/inventory/var/store/default" ]; then
-  disabled_path="/opt/flight/opt/inventory/etc/20-disable-xdg.conf"
-
-  cat <<EOF 1>&2
+  cat <<'EOF' 1>&2
 ========================================
-Flight Inventory - Disabling XDG Mode
+Flight Inventory - XDG Config Update
 ========================================
 
-Flight Inventory has been updated to store the configs using XDG.
-This mode has been disabled to maintain backwards compatibility with the
-previously installed version.
+Flight Inventory has been updated to store the configs using XDG. Please run
+the following to migrate the existing data into a user's XDG path.
 
-Refer to the following file on how to re-enable XDG mode:
-/opt/flight/opt/inventory/etc/20-disable-xdg.conf
-
-EOF
-
-  cat <<'EOF' >/opt/flight/opt/inventory/etc/20-disable-xdg.conf
-#==============================================================================
-# Copyright (C) 2020-present Alces Flight Ltd.
-#
-# This file is part of OpenFlight Omnibus Builder.
-#
-# This program and the accompanying materials are made available under
-# the terms of the Eclipse Public License 2.0 which is available at
-# <https://www.eclipse.org/legal/epl-2.0>, or alternative license
-# terms made available by Alces Flight Ltd - please direct inquiries
-# about licensing to licensing@alces-flight.com.
-#
-# This project is distributed in the hope that it will be useful, but
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS OR
-# IMPLIED INCLUDING, WITHOUT LIMITATION, ANY WARRANTIES OR CONDITIONS
-# OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A
-# PARTICULAR PURPOSE. See the Eclipse Public License 2.0 for more
-# details.
-#
-# You should have received a copy of the Eclipse Public License 2.0
-# along with this project. If not, see:
-#
-#  https://opensource.org/licenses/EPL-2.0
-#
-# For more information on OpenFlight Omnibus Builder, please visit:
-# https://github.com/openflighthpc/openflight-omnibus-builder
-#===============================================================================
-
-#===============================================================================
-# Using the old data directory instead of XDG_CACHE_HOME/flight/inventory
-#
-# To use XDG cache home, please migrate the data to the appropriat user's XDG
-# directory, then delete this file.
-#
-# mkdir -p "${XDG_CACHE_HOME:=~/.cache}/flight/inventory"
-# mv /opt/flight/opt/inventory/var/store/default/* "${XDG_CACHE_HOME:=~/.cache}/flight/inventory/"
-# rmdir /opt/flight/opt/inventory/var/store/default
-# rm /opt/flight/opt/inventory/etc/20-disable-xdg.conf
-#===============================================================================
-@yaml_dir = "/opt/flight/opt/inventory/var/store/default"
+$ mkdir -p "${XDG_CACHE_HOME:-~/.cache}/flight/inventory"
+$ mv /opt/flight/opt/inventory/var/store/default/* "${XDG_CACHE_HOME:-~/.cache}/flight/inventory/"
+$ rmdir /opt/flight/opt/inventory/var/store/default
 EOF
 fi

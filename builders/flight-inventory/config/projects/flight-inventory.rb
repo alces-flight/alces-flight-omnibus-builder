@@ -31,7 +31,7 @@ friendly_name 'Flight Inventory'
 
 install_dir '/opt/flight/opt/inventory'
 
-VERSION = '2.2.0-rc2'
+VERSION = '2.2.0-rc3'
 override 'flight-inventory', version: VERSION
 
 build_version VERSION
@@ -62,8 +62,6 @@ File.write(path, updated) unless original == updated
 Dir.glob('opt/**/*')
    .select { |p| File.file? p }
    .each { |p| extra_package_file p }
-
-config_file '/opt/flight/opt/inventory/etc/ZZ-overrides.conf'
 
 package :rpm do
   vendor 'Alces Flight Ltd'
