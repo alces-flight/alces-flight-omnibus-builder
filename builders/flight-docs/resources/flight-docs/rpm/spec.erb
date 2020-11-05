@@ -43,10 +43,12 @@ if priority != 'extra'
     end
   end
 
-  recommends.each do |name|
+  unless dist_tag.include? '7'
+    recommends.each do |name|
 -%>
 Recommends: <%= name %>
 <%
+    end
   end
 -%>
 <%

@@ -1,0 +1,101 @@
+# Flight Docs
+
+View documents associated with your Alces Flight Center account
+
+~~~
+$ flight docs --help
+  NAME:
+
+    flight docs
+
+  DESCRIPTION:
+
+    Alces Flight Center document viewer.
+
+  COMMANDS:
+
+    download Download a document.
+    help     Display global or [command] help documentation
+    list     List available documents.
+    show     Display a document.
+
+  ALIASES:
+
+    get download
+    ls  list
+
+  GLOBAL OPTIONS:
+
+    -h, --help
+        Display help documentation
+
+    --version
+        Display version information
+~~~
+
+## Login Into Your Alces Account
+
+Before using this tool, you must be logged into your flight center account.
+This is done using the `flight account` utility:
+
+~~~
+$ flight account login
+~~~
+
+## View Available Documents
+
+The available documents associated with your account can be view with the
+`list` command:
+
+~~~
+$ flight docs list
++---------------------+------------+-----------+----------+
+| Name                | Quick code | Locations | Type     |
++---------------------+------------+-----------+----------+
+| Demo howto document | jdscks     | Global    | Markdown |
+...
++---------------------+------------+-----------+----------+
+~~~
+
+## View a Document
+
+A document can be viewed with the `show` command.
+
+This can be done directly by name:
+NOTE: Names containing spaces must be quoted.
+
+~~~
+$ flight docs show "Demo howto document"
+Your document will be printed to the terminal if there is sufficient size
+
+Otherwise it will open in your favourite pager according to the $PAGER
+environment variable
+~~~
+
+Alternatively the above document could have been found via its quick code:
+
+~~~
+$ flight docs show jdsck
+.. as above ..
+~~~
+
+## Download a Document
+
+A document can be saved to disk using the `download` command. This can be done
+via name or quick code:
+
+~~~
+$ flight docs download "Demo howto document"
+Saving file to "Demo howto document.md"
+
+$ flight docs download jdscks
+Saving file to "Demo howto document.md.1"
+~~~
+
+By default the file will be saved according to its name. Alternatively the
+file name can be set with the `--output` flag:
+
+~~~
+$ flight docs download "Demo howto document" --output /tmp/my-doc
+Saving file to "/tmp/my-doc"
+~~~

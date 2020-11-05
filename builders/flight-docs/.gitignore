@@ -8,3 +8,4 @@ files/**/cache/
 vendor
 vendor
 local
+opt/flight/usr/share/howto/flight-docs.md
