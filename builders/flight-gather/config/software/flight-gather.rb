@@ -26,9 +26,10 @@
 #===============================================================================
 
 name 'flight-gather'
-default_version '2020.1'
+default_version '0'
 
 version('2020.1') { source sha256: 'b28124b85b99ce82d853631d4f7955dbb1dfbc8c0da1c21cc9aa160a4c791c36' }
+version('2020.2') { source sha256: 'e2b4a3d88fa893d06abc7a82eb08d7e0838d190e3f81c396f6ddf61368471f07' }
 
 source url: "https://raw.githubusercontent.com/openflighthpc/flight-inventory-data-gatherer/#{version}/build/gather-data-bundled.sh"
 
@@ -43,6 +44,7 @@ build do
   block do
     FileUtils.mkdir_p File.dirname(dst)
     FileUtils.cp src, dst
+    FileUtils.chmod 0664, dst
   end
 
   # Copy the associated files into /o/f/o/gather/libexec

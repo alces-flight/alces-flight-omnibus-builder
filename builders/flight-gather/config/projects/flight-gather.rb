@@ -31,7 +31,10 @@ friendly_name 'Flight Gather'
 
 install_dir '/opt/flight/opt/gather'
 
-VERSION = '1.0.2'
+VERSION = '1.1.0'
+TARBALL_VERSION = '2020.2'
+
+override 'flight-gather', version: TARBALL_VERSION
 
 build_version VERSION
 build_iteration 1

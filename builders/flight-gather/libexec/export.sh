@@ -149,7 +149,10 @@ else
   # Gets the info about all the missing nodes
   # NOTE: All created nodes are explicitly made without a group, so appear here
   #       The following code will break if the above assumption does not hold
-  list_output=$("$FLIGHT" asset list-assets --group '')
+  #
+  # NOTE: When exporting existing nodes with a group, the following output
+  #       may print to STDERR. This is to be expected and can be ignored
+  list_output=$("$FLIGHT" asset list-assets --group '' 2>/dev/null)
 
   # Notifies the user about created assets
   if [ "${#created[@]}" -ne 0 ]; then
