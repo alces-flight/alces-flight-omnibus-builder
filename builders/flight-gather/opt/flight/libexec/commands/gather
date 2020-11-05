@@ -1,7 +1,7 @@
 : '
 : NAME: gather
 : SYNOPSIS: Orchestrate the gathering and exporting inventory data
-: VERSION: 1.1.0-rc2
+: VERSION: 1.1.0
 : ROOT: true
 : '
 #==============================================================================
