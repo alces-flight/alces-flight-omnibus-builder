@@ -1,5 +1,5 @@
 #==============================================================================
-# Copyright (C) 2019-present Alces Flight Ltd.
+# Copyright (C) 2020-present Alces Flight Ltd.
 #
 # This file is part of OpenFlight Omnibus Builder.
 #
@@ -31,7 +31,7 @@ friendly_name 'Flight Inventory'
 
 install_dir '/opt/flight/opt/inventory'
 
-VERSION = '2.1.0'
+VERSION = '2.2.0'
 override 'flight-inventory', version: VERSION
 
 build_version VERSION
@@ -57,15 +57,11 @@ runtime_dependency 'flight-runway'
 path = File.expand_path('../../opt/flight/libexec/commands/inventory', __dir__)
 original = File.read(path)
 updated = original.sub(/^: VERSION: [[:graph:]]+$/, ": VERSION: #{VERSION}")
-unless original == updated
-  File.write path, updated
-  $stderr.puts <<~WARN
-    Updated the version in the libexec file! Please commit the file and try again.
-  WARN
-  exit 1
-end
+File.write(path, updated) unless original == updated
 
-extra_package_file 'opt/flight/libexec/commands/inventory'
+Dir.glob('opt/**/*')
+   .select { |p| File.file? p }
+   .each { |p| extra_package_file p }
 
 package :rpm do
   vendor 'Alces Flight Ltd'

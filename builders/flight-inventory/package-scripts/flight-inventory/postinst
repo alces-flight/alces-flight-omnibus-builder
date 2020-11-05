@@ -1,9 +1,4 @@
-: '
-: NAME: inventory
-: SYNOPSIS: Manage asset inventory data
-: VERSION: 2.2.0
-: ROOT: true
-: '
+#!/bin/sh
 #==============================================================================
 # Copyright (C) 2020-present Alces Flight Ltd.
 #
@@ -31,12 +26,17 @@
 # https://github.com/openflighthpc/openflight-omnibus-builder
 #===============================================================================
 
-if [ "$UID" != 0 ]; then
-  exec sudo "${flight_ROOT}"/bin/flight "$(basename "$0")" "$@"
-fi
+if [ -d "/opt/flight/opt/inventory/var/store/default" ]; then
+  cat <<'EOF' 1>&2
+========================================
+Flight Inventory - XDG Config Update
+========================================
 
-export RUBYOPT='-W0'
-export FLIGHT_CWD=$(pwd)
-cd /opt/flight/opt/inventory
-export FLIGHT_PROGRAM_NAME="${flight_NAME} $(basename $0)"
-flexec bundle exec bin/inventory "$@"
+Flight Inventory has been updated to store the configs using XDG. Please run
+the following to migrate the existing data into a user's XDG path.
+
+$ mkdir -p ${XDG_DATA_HOME:-~/.local/share}/flight/inventory
+$ mv /opt/flight/opt/inventory/var/store/default/* ${XDG_DATA_HOME:-~/.local/share}/flight/inventory/
+$ rmdir /opt/flight/opt/inventory/var/store/default
+EOF
+fi
