@@ -31,7 +31,7 @@ friendly_name 'Flight Inventory'
 
 install_dir '/opt/flight/opt/inventory'
 
-VERSION = '2.2.0-rc6'
+VERSION = '2.2.0'
 override 'flight-inventory', version: VERSION
 
 build_version VERSION
