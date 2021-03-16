@@ -37,7 +37,7 @@ TARBALL_VERSION = '2020.2'
 override 'flight-gather', version: TARBALL_VERSION
 
 build_version VERSION
-build_iteration 2
+build_iteration 3
 
 dependency 'preparation'
 dependency 'flight-gather'
@@ -54,11 +54,11 @@ exclude '**/bundler/git'
 
 if ohai['platform_family'] == 'rhel'
   runtime_dependency 'flight-asset >= 1.0.0, flight-asset < 2.2.0'
-  runtime_dependency 'flight-inventory >= 2.0.0, flight-inventory < 2.2.0'
+  runtime_dependency 'flight-inventory >= 2.0.0, flight-inventory < 2.3.0'
   runtime_dependency 'flight-runway >= 1.1.4'
 elsif ohai['platform_family'] == 'debian'
   runtime_dependency 'flight-asset (>= 1.0.0), flight-asset (< 2.2.0)'
-  runtime_dependency 'flight-inventory (>= 2.0.0), flight-inventory (< 2.2.0)'
+  runtime_dependency 'flight-inventory (>= 2.0.0), flight-inventory (< 2.3.0)'
   runtime_dependency "flight-runway (>= 1.1.4)"
 else
   raise "Unrecognised platform: #{ohai['platform_family']}"
