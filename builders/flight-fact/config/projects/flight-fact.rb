@@ -35,7 +35,7 @@ VERSION = '1.0.0'
 override 'flight-fact', version: VERSION
 
 build_version VERSION
-build_iteration 2
+build_iteration 3
 
 dependency 'preparation'
 dependency 'flight-fact'
@@ -55,10 +55,10 @@ runtime_dependency 'flight-ruby-system-2.0'
 
 if ohai['platform_family'] == 'rhel'
   runtime_dependency 'flight-asset >= 1.1.0'
-  runtime_dependency 'flight-asset < 2.1.0'
+  runtime_dependency 'flight-asset < 2.2.0'
 elsif ohai['platform_family'] == 'debian'
   runtime_dependency "flight-asset (>= 1.1.0)"
-  runtime_dependency "flight-asset (< 2.1.0)"
+  runtime_dependency "flight-asset (< 2.2.0)"
 else
   raise "Unrecognised platform: #{ohai['platform_family']}"
 end
