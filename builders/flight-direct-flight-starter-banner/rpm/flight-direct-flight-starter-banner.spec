@@ -44,6 +44,8 @@ cp -R dist/* $RPM_BUILD_ROOT
 /opt/flight/etc/assets/backgrounds/alces-flight.jpg
 
 %changelog
+* Wed Mar 24 2021 Ben Armston <ben.armston@alces-flight.com> - 2021.2.0
+- Updated to 2021.2.0 for use with latest OpenFlightHPC release
 * Mon Feb 22 2021 Ben Armston <ben.armston@alces-flight.com> - 2021.1.0
 - Updated to 2021.1.0 for use with latest OpenFlightHPC release
 - Fixed issue with background colour bleed
