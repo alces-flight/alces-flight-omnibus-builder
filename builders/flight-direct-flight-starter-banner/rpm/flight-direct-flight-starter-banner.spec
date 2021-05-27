@@ -13,7 +13,7 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:     noarch
-Requires:      flight-starter >= %{_flight_pkg_now}.0, flight-starter < %{_flight_pkg_next}.0~
+Requires:      flight-starter >= %{_flight_pkg_now}.0~, flight-starter < %{_flight_pkg_next}.0~
 Provides:      flight-starter-banner
 Conflicts:     flight-starter-banner
 
