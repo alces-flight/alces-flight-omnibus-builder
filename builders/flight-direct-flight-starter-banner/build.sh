@@ -7,7 +7,7 @@ NAME=flight-direct-flight-starter-banner
 NOW=2021.4
 NEXT=2021.5
 VERSION=${NOW}.0~rc1
-REL=1
+REL=2
 
 if [ ! -e ${NAME}-${VERSION}.tar.gz ]; then
   echo "Unable to find source tarball: ${NAME}-${VERSION}.tar.gz"
