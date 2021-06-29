@@ -13,7 +13,7 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:     noarch
-Requires:      flight-starter >= %{_flight_pkg_now}.0, flight-starter < %{_flight_pkg_next}.0~
+Requires:      flight-starter >= %{_flight_pkg_now}.0~, flight-starter < %{_flight_pkg_next}.0~
 Provides:      flight-starter-banner
 Conflicts:     flight-starter-banner
 
@@ -44,6 +44,8 @@ cp -R dist/* $RPM_BUILD_ROOT
 /opt/flight/etc/assets/backgrounds/alces-flight.jpg
 
 %changelog
+* Tue Jun 29 2021 Ben Armston <ben.armston@alces-flight.com> - 2021.5.0
+- Updated to 2021.5.0 for use with latest OpenFlightHPC release
 * Mon Jun 14 2021 Ben Armston <ben.armston@alces-flight.com> - 2021.4.0
 - Updated to 2021.4.0 for use with latest OpenFlightHPC release
 * Fri May 07 2021 Ben Armston <ben.armston@alces-flight.com> - 2021.3.0

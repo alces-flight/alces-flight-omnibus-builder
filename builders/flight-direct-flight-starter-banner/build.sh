@@ -4,10 +4,10 @@ d="$(pwd)"
 mkdir -p pkg
 
 NAME=flight-direct-flight-starter-banner
-NOW=2021.4
-NEXT=2021.5
+NOW=2021.5
+NEXT=2021.6
 VERSION=${NOW}.0
-REL=2
+REL=1
 
 if [ ! -e ${NAME}-${VERSION}.tar.gz ]; then
   echo "Unable to find source tarball: ${NAME}-${VERSION}.tar.gz"
