@@ -8,8 +8,8 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.6.0)
-      public_suffix (>= 2.0.2, < 4.0)
+    addressable (2.8.0)
+      public_suffix (>= 2.0.2, < 5.0)
     awesome_print (1.8.0)
     aws-sdk (2.11.235)
       aws-sdk-resources (= 2.11.235)
@@ -79,7 +79,7 @@ GEM
       zhexdump (>= 0.0.2)
     plist (3.5.0)
     progressbar (1.10.0)
-    public_suffix (3.0.3)
+    public_suffix (4.0.6)
     ruby-progressbar (1.10.0)
     systemu (2.6.5)
     thor (0.20.3)
