@@ -25,11 +25,43 @@
 # For more information on Alces Flight Omnibus Builder, please visit:
 # https://github.com/alces-flight/alces-flight-omnibus-builder
 #===============================================================================
+install_rvm() {
+    if ! gpg2 --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB; then
+      command curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
+      command curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import -
+    fi
+    if ! curl -sSL https://get.rvm.io | bash -s stable; then
+      if ! gpg2 --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB; then
+        command curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
+        command curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import -
+      fi
+      curl -sSL https://get.rvm.io | bash -s stable
+      if [ $? -gt 0 ]; then
+        cat <<EOF 1>&2
+
+!!!!!!!!!!!!!!!!!!!!!!!
+   RVM NOT INSTALLED
+!!!!!!!!!!!!!!!!!!!!!!!
+
+FSR, unable to install RVM. :-(
+
+EOF
+        exit 1
+      fi
+    fi
+}
+
+install_ruby_and_bundler() {
+    rvm install 2.7
+    gem install bundler:1.17.3
+    gem install bundler:2.1.4
+    usermod -a -G rvm vagrant
+}
+
 yum install -y -e0 git rpm-build cmake
-gpg2 --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-curl -sSL https://get.rvm.io | bash -s stable
+install_rvm
 source /etc/profile.d/rvm.sh
-rvm install 2.6.5
+install_ruby_and_bundler
 mkdir /opt/flight
 chown vagrant /opt/flight
 
