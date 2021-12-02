@@ -4,8 +4,8 @@ d="$(pwd)"
 mkdir -p pkg
 
 NAME=flight-direct-flight-starter-banner
-NOW=2021.8
-NEXT=2021.9
+NOW=2021.9
+NEXT=2021.10
 VERSION=${NOW}.0
 REL=1
 
