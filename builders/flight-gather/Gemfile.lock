@@ -62,7 +62,7 @@ GEM
     fuzzyurl (0.9.0)
     iostruct (0.0.4)
     ipaddress (0.8.3)
-    jmespath (1.4.0)
+    jmespath (1.6.1)
     libyajl2 (1.2.0)
     license_scout (1.1.8)
       ffi-yajl (~> 2.2)
