@@ -31,7 +31,7 @@ friendly_name 'Alces Flight landing page branding'
 
 install_dir '/opt/flight/opt/www/landing-page/branding'
 
-VERSION = '1.7.0-rc1'
+VERSION = '1.7.0'
 override 'alces-flight-landing-page-branding', version: VERSION
 
 build_version VERSION
