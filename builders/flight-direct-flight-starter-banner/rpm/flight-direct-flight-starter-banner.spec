@@ -44,6 +44,8 @@ cp -R dist/* $RPM_BUILD_ROOT
 /opt/flight/etc/assets/backgrounds/alces-flight.jpg
 
 %changelog
+* Tue Apr 25 2023 Jack Millard <jack.millard@alces-flight.com> - 2023.1.0
+- Updated to 2023.1.0 for use with latest OpenFlightHPC release
 * Tue Jun 29 2021 Ben Armston <ben.armston@alces-flight.com> - 2021.5.0
 - Updated to 2021.5.0 for use with latest OpenFlightHPC release
 * Mon Jun 14 2021 Ben Armston <ben.armston@alces-flight.com> - 2021.4.0
