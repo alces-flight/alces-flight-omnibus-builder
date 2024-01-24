@@ -4,9 +4,9 @@ d="$(pwd)"
 mkdir -p pkg
 
 NAME=flight-direct-flight-starter-banner
-NOW=2023.1
-NEXT=2023.2
-VERSION=${NOW}.0
+NOW=2024.1
+NEXT=2024.2
+VERSION=${NOW}.0~rc1
 REL=1
 
 if [ ! -e ${NAME}-${VERSION}.tar.gz ]; then
